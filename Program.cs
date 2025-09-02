@@ -1,5 +1,6 @@
 using GestionJugadores.Components;
 using GestionJugadores.DAL;
+using GestionJugadores.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ var ConStr = builder.Configuration.GetConnectionString("SqlConStr");
 
 //Agregamos el contexto al builder
 builder.Services.AddDbContextFactory<Contexto>(o => o.UseSqlServer(ConStr));
+
+//Inyectamos el service
+builder.Services.AddScoped<JugadoresService>();
 
 var app = builder.Build();
 
