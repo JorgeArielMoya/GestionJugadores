@@ -12,7 +12,7 @@ namespace GestionJugadores.Models
 
         public String Nombres { get; set; } = null!;
 
-        [Required(ErrorMessage = "Campo requerido")]
+        [Range(0, int.MaxValue, ErrorMessage = "Numero de partidas no valido")]
 
         public int Partidas { get; set; }
     }
