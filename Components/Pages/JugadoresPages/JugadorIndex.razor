@@ -1,5 +1,124 @@
-﻿<h3>JugadorIndex</h3>
+﻿@page "/Jugador/Index"
 
-@code {
+@inject JugadoresService jugadoresService
+@inject NavigationManager navigationManager
+
+<PageTitle> Registro de Jugadores </PageTitle>
+<div class="container"> 
+	<div class="card shadow-lg"> 
+		<div class="card-header">
+			<h5 class="card-title text-center"> <strong> Registro De Jugadores </strong> </h5>
+			<div align = "right">
+				<a href="/Jugador/Create" class="btn btn-primary"> <span class="bi bi-plus-square mt-3"> </span> Crear </a>
+			</div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-4"> 
+				<label class="col-form-label"> <strong>Filtrar por </strong></label>
+			</div>
+
+			<div class="col-3"> 
+				<label class="col-form-label"> <strong> Busqueda </strong> </label>
+			</div>
+
+		</div>
+
+		<div class="row align-items-center"> 
+			<div class="col-3"> 
+				<InputSelect class="form-select" @bind-value = "Filtro"> 
+					<option value="jugadorId"> JugadorId</option>
+					<option value = "nombres"> Nombres</option>
+				</InputSelect>
+			</div>
+
+			<div class="col-4"> 
+				<div class = "input-group"> 
+					<input class="form-control" @bind = "ValorFiltro" placeholder = "Buscar" /> 
+					<button class="btn btn-outline-primary bi bi-search" @onclick = "Buscar"> Buscar </button>
+				</div>
+			</div>
+		</div>
+
+		<table class="table table-hover"> 
+			<thead class="table table-striped text-black">
+				<tr>
+					<th> JugadorId</th>
+					<th> Nombres </th>
+					<th> Partidas </th>
+					<th> Editar </th>
+					<th> Eliminar </th>
+				</tr>
+			</thead>
+
+			<tbody> 
+				@foreach (var jugador in ListaJugadores)
+				{
+					<tr> 
+						<td> @jugador.JugadorId </td>
+						<td> @jugador.Nombres </td>
+						<td> @jugador.Partidas.ToString() </td>
+
+						<td>
+							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
+						</td>
+
+						<td>
+							<button class="btn btn-outline-danger bi bi-trash" @onclick = "() => Eliminar(jugador.JugadorId)"> </button>
+						</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+	</div>
+</div>
+
+@code 
+{
+	public List<Jugadores> ListaJugadores { get; set; } = new List<Jugadores>();
+
+	public string Filtro { get; set; } = string.Empty;
+
+	public string ValorFiltro { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync ()
+	{
+		await CargarJugadores();
+	}
+
+	private async Task Buscar() 
+	{
+		await CargarJugadores();
+	}
+
+	private async Task CargarJugadores ()
+	{
+		var lista = await jugadoresService.Listar(j => true);
+
+		if (!string.IsNullOrWhiteSpace(ValorFiltro))
+		{
+			if (Filtro == "jugadorId" && int.TryParse(ValorFiltro, out int id))
+			{
+				lista = lista.Where(j => j.JugadorId == id).ToList();
+			}
+
+			else if (Filtro == "nombre")
+			{
+				lista = lista.Where(j => j.Nombres != null && j.Nombres.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+			}
+
+			ListaJugadores = lista;
+		}
+	}
+
+	private async Task Eliminar (int jugadorId)
+	{
+		if (await jugadoresService.Eliminar(jugadorId))
+		{
+			await CargarJugadores();
+		}
+	}
 
 }
