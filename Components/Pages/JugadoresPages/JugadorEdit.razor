@@ -27,6 +27,11 @@
 							</div>
 						</div>
 
+						@if(existeNombre)
+						{
+							<div class="text-danger"> Este nombre ya se encuentra registrado </div>
+						}
+
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<label for="partidas" class="form-label mt-1"> Partidas: </label>
