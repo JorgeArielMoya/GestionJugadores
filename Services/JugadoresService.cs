@@ -29,7 +29,7 @@ namespace GestionJugadores.Services
         public async Task <bool> ExisteNombres (string nombres)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
-            return await contexto.Jugadores.AnyAsync(j => j.Nombres.ToLower() == nombres.ToLower());
+            return await contexto.Jugadores.AnyAsync(j => j.Nombres.ToLower().Equals(nombres.ToLower()));
         }
 
         private async Task<bool> Insertar (Jugadores jugador)
