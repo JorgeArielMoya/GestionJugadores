@@ -22,7 +22,7 @@
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<label for="Nombres" class="form-label mt-1"> Nombres: </label>
-								<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" onblur="@(async () => await ValidarExistenciaNombre(Jugador.Nombres))" />
+								<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" onblur="@(async () => await ValidarExistenciaNombre(Jugador.Nombres))"/>
 								<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
 							</div>
 						</div>
