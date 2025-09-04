@@ -1,5 +1,79 @@
-﻿<h3>JugadorEdit</h3>
+﻿@page "/Jugador/Edit/{JugadorId:int}"
+
+@inject JugadoresService jugadoresService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle> Editar Jugador </PageTitle>
+
+@if (Jugador != null)
+{
+	<div class="container mt-3"> 
+		<div class="card-shadow-sm">
+			<div class="card-header text-center">
+				<h5> Editar Jugador </h5>
+			</div>
+
+			<div class="card-body">
+				<EditForm Model="Jugador" OnValidSubmit="GuardarCambios" FormName="EditarJugador"> 
+					<DataAnnotationsValidator />
+				
+					<div class="border rounded-3 p-4 mb-4 bg-light">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="Nombres" class="form-label mt-1"> Nombres: </label>
+								<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" />
+								<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label for="partidas" class="form-label mt-1"> Partidas: </label>
+								<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Partidas" />
+								<ValidationMessage For="() => Jugador.Partidas"> </ValidationMessage>
+							</div>
+						</div>
+
+						<div class="d-flex justify-content-end gap-2 mt-2"> 
+							<button type="submit" class="btn btn-primary bi bi-save"> Guardar Cambios </button>
+							<a href="/Jugador/Index" class="btn btn-danger bi bi-arrow-left-circle"> Regresar </a>
+						</div>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	</div>
+}
+
+else
+{
+	<div class="text-center">
+		<p> Cargando datos del jugador... </p>
+	</div>
+}
+
 
 @code {
+	[Parameter]
+	public int JugadorId { get; set; }
+
+	public Jugadores? Jugador { get; set; }
+
+	protected override async Task OnInitializedAsync ()
+	{
+		Jugador = await jugadoresService.Buscar(JugadorId);
+	}
+
+	private async Task GuardarCambios ()
+	{
+		if (Jugador != null)
+		{
+			if (await jugadoresService.Guardar(Jugador))
+			{
+				navigationManager.NavigateTo("/Jugador/Index");
+			}
+		}
+	}
 
 }
