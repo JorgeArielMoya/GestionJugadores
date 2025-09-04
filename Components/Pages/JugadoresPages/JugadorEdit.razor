@@ -17,12 +17,12 @@
 			<div class="card-body">
 				<EditForm Model="Jugador" OnValidSubmit="GuardarCambios" FormName="EditarJugador"> 
 					<DataAnnotationsValidator />
-				
+
 					<div class="border rounded-3 p-4 mb-4 bg-light">
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<label for="Nombres" class="form-label mt-1"> Nombres: </label>
-								<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" />
+								<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" onblur="@(async () => await ValidarExistenciaNombre(Jugador.Nombres))" />
 								<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
 							</div>
 						</div>
@@ -60,6 +60,20 @@ else
 
 	public Jugadores? Jugador { get; set; }
 
+	private bool existeNombre { get; set; } = false;
+
+	private async Task ValidarExistenciaNombre (string nombres)
+	{
+		if (string.IsNullOrEmpty(nombres))
+		{
+			existeNombre = false;
+			return;
+		}
+
+		existeNombre = await jugadoresService.ExisteNombres(nombres);
+		StateHasChanged();
+	}
+
 	protected override async Task OnInitializedAsync ()
 	{
 		Jugador = await jugadoresService.Buscar(JugadorId);
@@ -67,11 +81,14 @@ else
 
 	private async Task GuardarCambios ()
 	{
-		if (Jugador != null)
+		if (!existeNombre)
 		{
-			if (await jugadoresService.Guardar(Jugador))
+			if (Jugador != null)
 			{
-				navigationManager.NavigateTo("/Jugador/Index");
+				if (await jugadoresService.Guardar(Jugador))
+				{
+					navigationManager.NavigateTo("/Jugador/Index");
+				}
 			}
 		}
 	}
