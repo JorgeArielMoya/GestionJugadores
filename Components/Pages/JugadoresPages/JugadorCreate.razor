@@ -16,33 +16,38 @@
 			<EditForm Model= "Jugador" OnValidSubmit="GuardarJugador" FormName="CrearJugadorFrom"> 
 				<DataAnnotationsValidator />
 
-					<div class="row"> 
-						<div class="col-md-3 mb1"> 
-							<label for="JugadorId"> JugadorId: </label>
-							<InputNumber id="jugadorId" class="form-control" @bind-Value = "Jugador.JugadorId" disabled/> 
-						</div>
+				<div class="row"> 
+					<div class="col-md-3 mb1"> 
+						<label for="JugadorId"> JugadorId: </label>
+						<InputNumber id="jugadorId" class="form-control" @bind-Value = "Jugador.JugadorId" disabled/> 
 					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for ="Nombres" class = "form-label mt-1"> Nombres: </label>
-							<InputText id="Nombres" class="form-control" @bind-Value = "Jugador.Nombres" />
-							<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
-						</div>
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for ="Nombres" class = "form-label mt-1"> Nombres: </label>
+						<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" onblur="@(async () => await ValidarExistenciaNombre(Jugador.Nombres))" />
+						<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
 					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for="partidas" class="form-label mt-1"> Partidas: </label>
-							<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Partidas" />
-							<ValidationMessage For="() => Jugador.Partidas"> </ValidationMessage>
-						</div>
+				@if(existeNombre)
+				{
+					<div class="text-danger"> Este nombre ya se encuentra registrado </div>		
+				}
+
+				<div class="row">
+					<div class="col-md-6 mb-3">
+						<label for="partidas" class="form-label mt-1"> Partidas: </label>
+						<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Partidas" />
+						<ValidationMessage For="() => Jugador.Partidas"> </ValidationMessage>
 					</div>
-					
-					<div class="d-flex justify-content-end gap-2 mt-2"> 
-						<button type="submit" class="btn btn-success bi bi-check-circle-fill"> Guardar </button>
-						<a href="/Jugador/Index" class="btn btn-danger bi-arrow-left-circle-fill"> Regresar </a>
-					</div>
+				</div>
+
+				<div class="d-flex justify-content-end gap-2 mt-2"> 
+					<button type="submit" class="btn btn-success bi bi-check-circle-fill"> Guardar </button>
+					<a href="/Jugador/Index" class="btn btn-danger bi-arrow-left-circle-fill"> Regresar </a>
+				</div>
 			</EditForm>
 		</div>
 	</div>
@@ -52,11 +57,28 @@
 {
 	public Jugadores Jugador { get; set; } = new();
 
+	private bool existeNombre { get; set; } = false;
+
+	private async Task ValidarExistenciaNombre (string nombres)
+	{
+		if (string.IsNullOrEmpty(nombres))
+		{
+			existeNombre = false;
+			return;
+		}
+
+		existeNombre = await jugadoresService.ExisteNombres(nombres);
+		StateHasChanged();
+	}
+
 	private async Task GuardarJugador ()
 	{
-		if (await jugadoresService.Guardar(Jugador))
+		if (!existeNombre)
 		{
-			navigationManager.NavigateTo("/Jugador/Index");
+			if (await jugadoresService.Guardar(Jugador))
+			{
+				navigationManager.NavigateTo("/Jugador/Index");
+			}
 		}
 	}
 }
