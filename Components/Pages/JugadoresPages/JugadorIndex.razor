@@ -2,6 +2,7 @@
 
 @inject JugadoresService jugadoresService
 @inject NavigationManager navigationManager
+@rendermode InteractiveServer
 
 <PageTitle> Registro de Jugadores </PageTitle>
 <div class="container"> 
@@ -9,14 +10,14 @@
 		<div class="card-header">
 			<h5 class="card-title text-center"> <strong> Registro De Jugadores </strong> </h5>
 			<div align = "right">
-				<a href="/Jugador/Create" class="btn btn-primary"> <span class="bi bi-plus-square mt-3"> </span> Crear </a>
+				<a href="/Jugador/Create" class="btn btn-success"> <span class="bi bi-plus-square mt-3"> </span> Crear </a>
 			</div>
 		</div>
 
 		<div class="row">
 
 			<div class="col-4"> 
-				<label class="col-form-label"> <strong>Filtrar por </strong></label>
+				<label class="col-form-label ms-1"> <strong>Filtrar por </strong></label>
 			</div>
 
 			<div class="col-3"> 
@@ -26,7 +27,7 @@
 		</div>
 
 		<div class="row align-items-center"> 
-			<div class="col-3"> 
+			<div class="col-3 ms-1"> 
 				<InputSelect class="form-select" @bind-value = "Filtro"> 
 					<option value="jugadorId"> JugadorId</option>
 					<option value = "nombres"> Nombres</option>
@@ -41,31 +42,36 @@
 			</div>
 		</div>
 
-		<table class="table table-hover"> 
+		<table class="table table-hover mt-4"> 
 			<thead class="table table-striped text-black">
 				<tr>
-					<th> JugadorId</th>
-					<th> Nombres </th>
-					<th> Partidas </th>
-					<th> Editar </th>
-					<th> Eliminar </th>
+					<th class="text-center border border-dark"> JugadorId</th>
+					<th class="text-center border border-dark"> Nombres </th>
+					<th class="text-center border border-dark"> Partidas </th>
+					<th class="text-center border border-dark"> Editar </th>
+					<th class="text-center border border-dark"> Eliminar </th>
 				</tr>
 			</thead>
-
+			@if (ListaJugadores.Count == 0)
+			{
+				<tr>
+					<td colspan="5" class="text-center fs-5 py-4"> No se han encontrado jugadores  </td>
+				</tr>
+			}
 			<tbody> 
 				@foreach (var jugador in ListaJugadores)
 				{
-					<tr> 
-						<td> @jugador.JugadorId </td>
-						<td> @jugador.Nombres </td>
-						<td> @jugador.Partidas.ToString() </td>
+					<tr>
+						<td class="text-center border border-dark"> @jugador.JugadorId </td>
+						<td class="text-center border border-dark"> @jugador.Nombres </td>
+						<td class="text-center border border-dark"> @jugador.Partidas.ToString() </td>
 
-						<td>
+						<td class="text-center border border-dark">
 							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
 						</td>
 
-						<td>
-							<button class="btn btn-outline-danger bi bi-trash" @onclick = "() => Eliminar(jugador.JugadorId)"> </button>
+						<td class="text-center border border-dark">
+							<button class="btn btn-outline-danger bi bi-trash" @onclick="() => Eliminar(jugador.JugadorId)"> </button>
 						</td>
 					</tr>
 				}
@@ -104,13 +110,12 @@
 				lista = lista.Where(j => j.JugadorId == id).ToList();
 			}
 
-			else if (Filtro == "nombre")
+			else if (Filtro == "nombres")
 			{
 				lista = lista.Where(j => j.Nombres != null && j.Nombres.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
 			}
-
-			ListaJugadores = lista;
 		}
+		ListaJugadores = lista;
 	}
 
 	private async Task Eliminar (int jugadorId)
@@ -120,5 +125,4 @@
 			await CargarJugadores();
 		}
 	}
-
 }
