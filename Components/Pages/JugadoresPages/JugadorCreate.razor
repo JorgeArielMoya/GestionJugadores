@@ -74,6 +74,8 @@
 
 	private async Task GuardarJugador ()
 	{
+		await Task.Delay(1000);
+
 		if (!existeNombre)
 		{
 			if (await jugadoresService.Guardar(Jugador))
