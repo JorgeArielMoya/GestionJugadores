@@ -9,11 +9,6 @@ namespace GestionJugadores.Services
     {
         public async Task<bool> Guardar (Jugadores jugador)
         {
-            if (await ExisteNombres(jugador.Nombres) && jugador.JugadorId == 0)
-            {
-                return false;
-            }
-
             if (!await Existe (jugador.JugadorId))
             {
                 return await Insertar (jugador);
