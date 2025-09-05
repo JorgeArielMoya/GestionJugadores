@@ -43,14 +43,14 @@
 			</div>
 		</div>
 
-		<table class="table table-hover mt-4"> 
-			<thead class="table table-striped text-black">
-				<tr>
-					<th class="text-center border border-dark"> JugadorId</th>
-					<th class="text-center border border-dark"> Nombres </th>
-					<th class="text-center border border-dark"> Partidas </th>
-					<th class="text-center border border-dark"> Editar </th>
-					<th class="text-center border border-dark"> Eliminar </th>
+		<table class="table table-hover mt-3"> 
+			<thead class="table table-striped text-black border-1 border-end">
+				<tr class="border-bottom border-dark">
+					<th class="text-center border-end"> JugadorId</th>
+					<th class="text-center border-end"> Nombres </th>
+					<th class="text-center border-end"> Partidas </th>
+					<th class="text-center border-end"> Editar </th>
+					<th class="text-center border-end"> Eliminar </th>
 				</tr>
 			</thead>
 
@@ -63,16 +63,16 @@
 			<tbody> 
 				@foreach (var jugador in ListaJugadores)
 				{
-					<tr>
-						<td class="text-center border border-dark"> @jugador.JugadorId </td>
-						<td class="text-center border border-dark"> @jugador.Nombres </td>
-						<td class="text-center border border-dark"> @jugador.Partidas.ToString() </td>
+					<tr class="text-center border border-end">
+						<td class="border"> @jugador.JugadorId </td>
+						<td class="border"> @jugador.Nombres </td>
+						<td class="border"> @jugador.Partidas.ToString() </td>
 
-						<td class="text-center border border-dark">
+						<td class="border">
 							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
 						</td>
 
-						<td class="text-center border border-dark">
+						<td class="border">
 							<button class="btn btn-outline-danger bi bi-trash" @onclick="() => Eliminar(jugador.JugadorId)"> </button>
 						</td>
 					</tr>
