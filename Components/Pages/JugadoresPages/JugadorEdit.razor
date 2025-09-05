@@ -100,8 +100,6 @@ else
 
 	private string nombreOg { get; set; } = string.Empty;
 
-	private bool esEdicion => Jugador.JugadorId > 0;
-
 	private async Task ValidarExistenciaNombre (string nombres)
 	{
 		if (string.IsNullOrEmpty(nombres))
@@ -110,7 +108,7 @@ else
 			return;
 		}
 
-		if (esEdicion && nombres.ToLower().Equals(nombreOg.ToLower()))
+		if (nombres.ToLower().Equals(nombreOg.ToLower()))
 		{
 			existeNombre = false;
 			return;
@@ -131,10 +129,7 @@ else
 	{
 		Jugador = await jugadoresService.Buscar(JugadorId);
 
-		if (esEdicion)
-		{
-			nombreOg = Jugador.Nombres;
-		}
+		nombreOg = Jugador.Nombres;
 	}
 
 	private async Task GuardarCambios ()
