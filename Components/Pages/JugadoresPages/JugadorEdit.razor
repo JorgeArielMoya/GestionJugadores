@@ -98,9 +98,19 @@ else
 
 	private bool mostrarModalEliminar { get; set; } = false;
 
+	private string nombreOg { get; set; } = string.Empty;
+
+	private bool esEdicion => Jugador.JugadorId > 0;
+
 	private async Task ValidarExistenciaNombre (string nombres)
 	{
 		if (string.IsNullOrEmpty(nombres))
+		{
+			existeNombre = false;
+			return;
+		}
+
+		if (esEdicion && nombres.ToLower().Equals(nombreOg.ToLower()))
 		{
 			existeNombre = false;
 			return;
@@ -120,11 +130,16 @@ else
 	protected override async Task OnInitializedAsync ()
 	{
 		Jugador = await jugadoresService.Buscar(JugadorId);
+
+		if (esEdicion)
+		{
+			nombreOg = Jugador.Nombres;
+		}
 	}
 
 	private async Task GuardarCambios ()
 	{
-		if (!existeNombre)
+		if (!existeNombre || nombreOg.ToLower().Equals(Jugador.Nombres))
 		{
 			if (Jugador != null)
 			{
