@@ -14,7 +14,7 @@ namespace GestionJugadores.Services
                 return false;
             }
 
-            if (!await Existe (jugador.JugadorId) && !await ExisteNombres(jugador.Nombres))
+            if (!await Existe (jugador.JugadorId))
             {
                 return await Insertar (jugador);
             }
