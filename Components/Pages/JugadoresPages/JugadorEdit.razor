@@ -15,7 +15,7 @@
 			</div>
 
 			<div class="card-body">
-				<EditForm Model="Jugador" OnValidSubmit="GuardarCambios" FormName="EditarJugador"> 
+				<EditForm Model="Jugador" OnValidSubmit="GuardarCambios"> 
 					<DataAnnotationsValidator />
 
 					<div class="border rounded-3 p-4 mb-4 bg-light">
@@ -42,7 +42,8 @@
 
 						<div class="d-flex justify-content-end gap-2 mt-2"> 
 							<button type="submit" class="btn btn-primary bi bi-save"> Guardar Cambios </button>
-							<a href="/Jugador/Index" class="btn btn-danger bi bi-arrow-left-circle"> Regresar </a>
+							<button  type ="button" class="btn btn-danger bi bi-trash" @onclick = "MostrarModal"> Eliminar </button>
+							<a href="/Jugador/Index" class="btn btn-secondary bi bi-arrow-left-circle"> Regresar </a>
 						</div>
 					</div>
 				</EditForm>
@@ -58,6 +59,34 @@ else
 	</div>
 }
 
+@if (mostrarModalEliminar)
+{
+	<div class = "modal d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5)">
+		<div class="modal-dialog"> 
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Confirmar Eliminacion </h5>
+				</div>
+
+				<div class="modal-body">
+					<h6> Datos Del Jugador </h6>
+
+					<div> <strong> Jugador Id: </strong> @Jugador.JugadorId </div>
+					<div> <strong> Nombre: </strong> @Jugador.Nombres </div>
+					<div> <strong> Partidas: </strong> @Jugador.Partidas</div>
+
+					<div class="text-danger mt-3"> ¿Esta seguro que desea eliminar este jugador? </div>
+				</div>
+
+				<div class="modal-footer">
+					<button type ="button"class="btn btn-danger bi bi-trash" @onclick = "ConfirmarEliminacion"> Si, deseo eliminar </button>
+					<button type="button" class="btn btn-secondary bi bi-arrow-right-circle" @onclick = "() => mostrarModalEliminar = false"> Regresar</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+}
 
 @code {
 	[Parameter]
@@ -66,6 +95,8 @@ else
 	public Jugadores? Jugador { get; set; }
 
 	private bool existeNombre { get; set; } = false;
+
+	private bool mostrarModalEliminar { get; set; } = false;
 
 	private async Task ValidarExistenciaNombre (string nombres)
 	{
@@ -77,6 +108,13 @@ else
 
 		existeNombre = await jugadoresService.ExisteNombres(nombres);
 		StateHasChanged();
+	}
+
+	private async Task MostrarModal ()
+	{
+		mostrarModalEliminar = true;
+		StateHasChanged();
+		await InvokeAsync(StateHasChanged);
 	}
 
 	protected override async Task OnInitializedAsync ()
@@ -98,4 +136,15 @@ else
 		}
 	}
 
+	private async Task ConfirmarEliminacion ()
+	{
+		if (Jugador != null)
+		{
+			if (await jugadoresService.Eliminar(Jugador.JugadorId))
+			{
+				mostrarModalEliminar = false;
+				navigationManager.NavigateTo("/Jugador/Index");
+			}
+		}
+	}
 }

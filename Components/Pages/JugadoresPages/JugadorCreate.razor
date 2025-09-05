@@ -13,7 +13,7 @@
 		</div>
 
 		<div class="card-body"> 
-			<EditForm Model= "Jugador" OnValidSubmit="GuardarJugador" FormName="CrearJugadorFrom"> 
+			<EditForm Model= "Jugador" OnValidSubmit="GuardarJugador"> 
 				<DataAnnotationsValidator />
 
 				<div class="row"> 
@@ -61,14 +61,15 @@
 
 	private async Task ValidarExistenciaNombre (string nombres)
 	{
-		if (string.IsNullOrEmpty(nombres))
+		if (string.IsNullOrWhiteSpace(nombres))
 		{
 			existeNombre = false;
 			return;
 		}
 
-		existeNombre = await jugadoresService.ExisteNombres(nombres);
+		existeNombre = await jugadoresService.ExisteNombres(Jugador.Nombres);
 		StateHasChanged();
+		await InvokeAsync(StateHasChanged);
 	}
 
 	private async Task GuardarJugador ()
