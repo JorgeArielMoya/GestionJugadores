@@ -113,7 +113,6 @@ else
 			existeNombre = false;
 			return;
 		}
-
 		existeNombre = await jugadoresService.ExisteNombres(nombres);
 		StateHasChanged();
 	}
@@ -128,13 +127,14 @@ else
 	protected override async Task OnInitializedAsync ()
 	{
 		Jugador = await jugadoresService.Buscar(JugadorId);
-
 		nombreOg = Jugador.Nombres;
 	}
 
 	private async Task GuardarCambios ()
 	{
-		if (!existeNombre || nombreOg.ToLower().Equals(Jugador.Nombres))
+		await Task.Delay(1500);
+
+		if (!existeNombre || nombreOg.ToLower().Equals(Jugador.Nombres.ToLower()))
 		{
 			if (Jugador != null)
 			{
