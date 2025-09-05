@@ -18,14 +18,14 @@
 
 				<div class="row"> 
 					<div class="col-md-3 mb1"> 
-						<label for="JugadorId"> JugadorId: </label>
+						<label for="JugadorId"> <strong> JugadorId: </strong> </label>
 						<InputNumber id="jugadorId" class="form-control" @bind-Value = "Jugador.JugadorId" disabled/> 
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="col-md-6 mb-3">
-						<label for ="Nombres" class = "form-label mt-1"> Nombres: </label>
+						<label for ="Nombres" class = "form-label mt-1"> <strong> Nombres: </strong> </label>
 						<InputText id="Nombres" class="form-control" @bind-Value="Jugador.Nombres" onblur="@(async () => await ValidarExistenciaNombre(Jugador.Nombres))" />
 						<ValidationMessage For="() => Jugador.Nombres"> </ValidationMessage>
 					</div>
@@ -38,7 +38,7 @@
 
 				<div class="row">
 					<div class="col-md-6 mb-3">
-						<label for="partidas" class="form-label mt-1"> Partidas: </label>
+						<label for="partidas" class="form-label mt-1"> <strong> Partidas: </strong> </label>
 						<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Partidas" />
 						<ValidationMessage For="() => Jugador.Partidas"> </ValidationMessage>
 					</div>
