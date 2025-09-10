@@ -43,14 +43,14 @@
 			</div>
 		</div>
 
-		<table class="table table-hover mt-3"> 
-			<thead class="table table-striped text-black border-1 border-end">
-				<tr class="border-bottom border-dark">
-					<th class="text-center border-end"> JugadorId</th>
-					<th class="text-center border-end"> Nombres </th>
-					<th class="text-center border-end"> Partidas </th>
-					<th class="text-center border-end"> Editar </th>
-					<th class="text-center border-end"> Eliminar </th>
+		<table class="table table-hover table-bordered mt-3 text-center"> 
+			<thead class="text-black bg-white">
+				<tr class="border-bottom border-2 border-dark">
+					<th> JugadorId</th>
+					<th> Nombres </th>
+					<th> Partidas </th>
+					<th> Editar </th>
+					<th> Eliminar </th>
 				</tr>
 			</thead>
 
@@ -102,21 +102,28 @@
 
 	private async Task CargarJugadores ()
 	{
-		var lista = await jugadoresService.Listar(j => true);
-
-		if (!string.IsNullOrWhiteSpace(ValorFiltro))
+		try
 		{
-			if (Filtro == "jugadorId" && int.TryParse(ValorFiltro, out int id))
-			{
-				lista = lista.Where(j => j.JugadorId == id).ToList();
-			}
+			var lista = await jugadoresService.Listar(j => true);
 
-			else if (Filtro == "nombres")
+			if (!string.IsNullOrWhiteSpace(ValorFiltro))
 			{
-				lista = lista.Where(j => j.Nombres != null && j.Nombres.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+				if (Filtro == "jugadorId" && int.TryParse(ValorFiltro, out int id))
+				{
+					lista = lista.Where(j => j.JugadorId == id).ToList();
+				}
+
+				else if (Filtro == "nombres")
+				{
+					lista = lista.Where(j => j.Nombres != null && j.Nombres.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+				}
 			}
+			ListaJugadores = lista;
+		} 
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
 		}
-		ListaJugadores = lista;
 	}
 
 	private async Task Eliminar (int jugadorId)
