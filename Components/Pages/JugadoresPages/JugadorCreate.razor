@@ -6,6 +6,7 @@
 
 <PageTitle> Crear Nuevo Jugador </PageTitle>
 
+@*Contenedor*@
 <div class="container mt-3">
 	<div class="card shadow-sm">
 		<div class="card-header text-center text-white bg-info">
@@ -15,6 +16,8 @@
 		<div class="card-body"> 
 			<EditForm Model= "Jugador" OnValidSubmit="GuardarJugador"> 
 				<DataAnnotationsValidator />
+
+				@*Inputs*@
 				<div class="row"> 
 					<div class="col-md-3 mb1"> 
 						<label for="JugadorId"> <strong> JugadorId: </strong> </label>
@@ -43,6 +46,7 @@
 					</div>
 				</div>
 
+				@*Botones*@
 				<div class="d-flex justify-content-end gap-2 mt-2"> 
 					<button type="submit" class="btn btn-success bi bi-floppy"> Guardar </button>
 					<a href="/Jugador/Index" class="btn btn-danger bi-arrow-left"> Regresar </a>

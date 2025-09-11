@@ -6,6 +6,7 @@
 
 <PageTitle> Index de Jugadores </PageTitle>
 
+@*Contenedor*@
 <div class="container"> 
 	<div class="card shadow-lg"> 
 		<div class="card-header">
@@ -24,6 +25,7 @@
 			</div>
 		</div>
 
+		@*Filtros*@
 		<div class="row align-items-center"> 
 			<div class="col-3 ms-1"> 
 				<InputSelect class="form-select" @bind-value = "Filtro"> 
@@ -77,6 +79,8 @@
 			</tbody>
 		</table>
 	</div>
+
+	@*Footer*@
 	<div class="card-footer space-between"> 
 		<div class="row">
 			<div class="col-3">
