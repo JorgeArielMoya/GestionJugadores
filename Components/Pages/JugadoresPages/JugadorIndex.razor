@@ -49,7 +49,6 @@
 					<th> Nombres </th>
 					<th> Partidas </th>
 					<th> Editar </th>
-					<th> Eliminar </th>
 				</tr>
 			</thead>
 
@@ -69,10 +68,6 @@
 
 						<td class="border">
 							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
-						</td>
-
-						<td class="border">
-							<button class="btn btn-outline-danger bi bi-trash" @onclick="() => Eliminar(jugador.JugadorId)"> </button>
 						</td>
 					</tr>
 				}
@@ -135,14 +130,6 @@
 		catch (Exception e)
 		{
 			Console.WriteLine($"Error: {e.Message}");
-		}
-	}
-
-	private async Task Eliminar (int jugadorId)
-	{
-		if (await jugadoresService.Eliminar(jugadorId))
-		{
-			await CargarJugadores();
 		}
 	}
 }
