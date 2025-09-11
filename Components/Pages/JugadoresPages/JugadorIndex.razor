@@ -29,8 +29,8 @@
 		<div class="row align-items-center"> 
 			<div class="col-3 ms-1"> 
 				<InputSelect class="form-select" @bind-value = "Filtro"> 
-					<option value="jugadorId"> JugadorId</option>
-					<option value = "nombres"> Nombres</option>
+					<option value="JugadorId"> JugadorId</option>
+					<option value = "Nombres"> Nombres</option>
 				</InputSelect>
 			</div>
 
@@ -93,7 +93,7 @@
 {
 	public List<Jugadores> ListaJugadores { get; set; } = new List<Jugadores>();
 
-	public string Filtro { get; set; } = "jugadorId";
+	public string Filtro { get; set; } = "JugadorId";
 
 	public string ValorFiltro { get; set; } = string.Empty;
 
@@ -115,12 +115,12 @@
 
 			if (!string.IsNullOrWhiteSpace(ValorFiltro))
 			{
-				if (Filtro == "jugadorId" && int.TryParse(ValorFiltro, out int id))
+				if (Filtro == nameof(Jugadores.JugadorId) && int.TryParse(ValorFiltro, out int id))
 				{
 					lista = lista.Where(j => j.JugadorId == id).ToList();
 				}
 
-				else if (Filtro == "nombres")
+				else if (Filtro == nameof(Jugadores.Nombres))
 				{
 					lista = lista.Where(j => j.Nombres != null && j.Nombres.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
 				}
