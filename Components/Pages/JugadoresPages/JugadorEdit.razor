@@ -17,7 +17,6 @@
 			<div class="card-body">
 				<EditForm Model="Jugador" OnValidSubmit="GuardarCambios"> 
 					<DataAnnotationsValidator />
-
 					<div class="border rounded-3 p-4 mb-4 bg-light">
 						<div class="row">
 							<div class="col-md-6 mb-3">
@@ -70,11 +69,9 @@ else
 
 				<div class="modal-body">
 					<h6> <strong> Datos Del Jugador </strong> </h6>
-
 					<div> <strong> Jugador Id: </strong> @Jugador.JugadorId </div>
 					<div> <strong> Nombre: </strong> @Jugador.Nombres </div>
 					<div> <strong> Partidas: </strong> @Jugador.Partidas</div>
-
 					<div class="text-danger mt-3"> ¿Está seguro que desea eliminar este jugador? </div>
 				</div>
 
@@ -98,7 +95,7 @@ else
 
 	private bool mostrarModalEliminar { get; set; } = false;
 
-	private string nombreOg { get; set; } = string.Empty;
+	private string nombreOriginal { get; set; } = string.Empty;
 
 	private async Task ValidarExistenciaNombre (string nombres)
 	{
@@ -108,7 +105,7 @@ else
 			return;
 		}
 
-		if (nombres.ToLower().Equals(nombreOg.ToLower()))
+		if (nombres.ToLower().Equals(nombreOriginal.ToLower()))
 		{
 			existeNombre = false;
 			return;
@@ -127,14 +124,14 @@ else
 	protected override async Task OnInitializedAsync ()
 	{
 		Jugador = await jugadoresService.Buscar(JugadorId);
-		nombreOg = Jugador.Nombres;
+		nombreOriginal = Jugador.Nombres;
 	}
 
 	private async Task GuardarCambios ()
 	{
 		await Task.Delay(1000);
 
-		if (!existeNombre || nombreOg.ToLower().Equals(Jugador.Nombres.ToLower()))
+		if (!existeNombre || nombreOriginal.ToLower().Equals(Jugador.Nombres.ToLower()))
 		{
 			if (Jugador != null)
 			{
