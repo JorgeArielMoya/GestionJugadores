@@ -24,8 +24,7 @@ namespace GestionJugadores.Services
         private async Task<bool> Existe (int PartidaId)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
-            return await contexto.Partidas
-                .AnyAsync(p => p.PartidaId == PartidaId); 
+            return await contexto.Partidas.AnyAsync(p => p.PartidaId == PartidaId); 
         }
 
         private async Task<bool> Insertar (Partidas partida)
@@ -45,8 +44,7 @@ namespace GestionJugadores.Services
         public async Task<Partidas?> Buscar (int partidaId)
         {
             await using var contexto = await DbFactory.CreateDbContextAsync();
-            return await contexto.Partidas
-                .FirstOrDefaultAsync(p => p.PartidaId == partidaId);
+            return await contexto.Partidas.FirstOrDefaultAsync(p => p.PartidaId == partidaId);
         }
 
         public async Task<bool> Eliminar (int partidaId)
