@@ -232,7 +232,7 @@ else
 	{
 		if (Partida != null)
 		{
-			if ((Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio) || Partida.EstadoPartida.ToLower().Equals("finalizada"))
+			if ((Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio) || !Partida.EstadoPartida.ToLower().Equals("finalizada"))
 			{
 				fechaFinValida = false;
 				return;
