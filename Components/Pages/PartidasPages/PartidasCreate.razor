@@ -31,7 +31,10 @@
 							<option> Seleccione un Jugador </option>
 							@foreach(var jugador in ListaJugadores)
 							{
-								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								@if(jugador.JugadorId != Partida.Jugador2Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
 							}
 						</InputSelect>
 					</div>
@@ -44,36 +47,47 @@
 							<option> Seleccione un jugador </option>
 							@foreach (var jugador in ListaJugadores)
 							{
-								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
-							}
-						</InputSelect>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-3">
-						<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
-						<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId">
-							<option> Seleccione un jugador </option>
-							@foreach (var jugador in ListaJugadores)
-							{
-								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								@if (jugador.JugadorId != Partida.Jugador1Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
 							}
 						</InputSelect>
 					</div>
 				</div>
 
 				<div class="row"> 
-					<div class="col-5"> 
+					<div class="col-6"> 
 						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Pendiente | En progreso | Finalizada): </strong></label>
 						<InputText id="EstadoPartida" class="form-control" @bind-Value = "Partida.EstadoPartida" onblur="@(async () => await EstadoEsValido())"> </InputText>
 						<ValidationMessage For="() => Partida.EstadoPartida" ></ValidationMessage>
 					</div>
 				</div>
 
-				@if(!estadoValido)
+				@if (!estadoValido)
 				{
-					<div class="text-danger"> @mensajeError </div>
+					<div class="text-danger"> Estado de partida no valido </div>
+				}
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId" onblur="@(async () => await SePuedeGanar())">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								@if (jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				@if (!puedePonerGanador)
+				{
+					<div class = "text-danger"> La partida debe haber finalizado </div>
 				}
 
 				<div class="row">
@@ -83,7 +97,10 @@
 							<option> Seleccione un jugador </option>
 							@foreach (var jugador in ListaJugadores)
 							{
-								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								if (jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
 							}
 						</InputSelect>
 					</div>
@@ -99,9 +116,14 @@
 				<div class="row">
 					<div class="col-3">
 						<label class="form-label mt-2" for="FechaFin"><strong> Fecha Fin: </strong></label>
-						<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin"> </InputDate>
+						<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin" onblur="@(async () => await ValidarFechaFin())"> </InputDate>
 					</div>
 				</div>
+
+				@if (!fechaFinValida)
+				{
+					<div class="text-danger"> Fecha fin no valida  </div>
+				}
 
 				<div class="card-footer bg-white"> 
 					<div class="d-flex justify-content-end gap-2 mt-2">
@@ -119,34 +141,70 @@
 
 	public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
-	public string? mensajeError { get; set; } = string.Empty;
-
 	public bool estadoValido { get; set; } = true;
+
+	public bool fechaFinValida { get; set; } = true;
+
+	public bool puedePonerGanador { get; set; } = false;
 
 	protected override async Task OnInitializedAsync ()
 	{
 		ListaJugadores = await jugadoresService.Listar(j => true);
 	}
 
-	public async Task EstadoEsValido()
+	public async Task SePuedeGanar ()
 	{
-		var estadosValidos = new[] {"pendiente", "en progreso", "finalizada"};
-
-		if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+		if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
 		{
-			estadoValido = false;
-			mensajeError = "Estado no valido"; 
+			puedePonerGanador = false;
 			return;
 		}
 
-		estadoValido = true;
+		puedePonerGanador = true;
+		StateHasChanged();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public async Task EstadoEsValido()
+	{
+		try
+		{
+			var estadosValidos = new[] {"pendiente", "en progreso", "finalizada"};
+
+			if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+			{
+				estadoValido = false;
+				return;
+			}
+
+			estadoValido = true;
+			StateHasChanged();
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
+		}
+	}
+
+	private async Task ValidarFechaFin ()
+	{
+		if (Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio)
+		{
+			fechaFinValida = false;
+			return;
+		}
+
+		fechaFinValida = true;
 		StateHasChanged();
 		await InvokeAsync(StateHasChanged);
 	}
 
 	private async Task GuardarPartida ()
 	{
-		if (estadoValido)
+		await Task.Delay(1000);
+
+		if (estadoValido && fechaFinValida)
 		{
 			if (await partidasService.Guardar(Partida))
 			{
