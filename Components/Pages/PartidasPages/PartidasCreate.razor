@@ -50,6 +50,19 @@
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+
 				<div class="row"> 
 					<div class="col-5"> 
 						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Inactiva | En progreso | Finalizada): </strong></label>
@@ -61,7 +74,7 @@
 				<div class="row">
 					<div class="col-3">
 						<label class="form-label mt-2" for="TurnoJugador"> <strong> Turno Jugador: </strong> </label>
-						<InputSelect class="form-control form-select" @bind-Value="Partida.TurnoJugador">
+						<InputSelect class="form-control form-select" @bind-Value="Partida.TurnoJugadorId">
 							<option> Seleccione un jugador </option>
 							@foreach (var jugador in ListaJugadores)
 							{
@@ -87,7 +100,7 @@
 
 				<div class="card-footer bg-white"> 
 					<div class="d-flex justify-content-end gap-2 mt-2">
-						<button type="submit" class="btn btn-success bi bi-floppy" @onclick = "GuardarPartida"> Guardar </button>
+						<button type="submit" class="btn btn-success bi bi-floppy"> Guardar </button>
 						<a href="/Partidas/Index" class="btn btn-secondary bi bi-arrow-left"> Regresar </a>
 					</div>
 				</div>
@@ -99,7 +112,7 @@
 @code {
 	public Partidas Partida = new();
 
-	public List<Jugadores> ListaJugadores = [];
+	public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
 	protected override async Task OnInitializedAsync ()
 	{
