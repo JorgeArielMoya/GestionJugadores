@@ -29,10 +29,10 @@
 			<div class="col-3 ms-1"> 
 				<InputSelect class="form-select" @bind-Value = "Filtro"> 
 					<option value="PartidaId"> PartidaId </option>
-					<option value ="Jugador1Id"> Jugador1Id</option>
-					<option value="Jugador2Id"> Jugador2Id </option>
+					<option value ="Jugador1Id"> Jugador 1</option>
+					<option value="Jugador2Id"> Jugador 2 </option>
 					<option value = "EstadoPartida"> Estado Partida</option>
-					<option value= "GanadorId"> GanadorId </option>
+					<option value= "GanadorId"> Ganador </option>
 				</InputSelect>
 			</div>
 
@@ -48,9 +48,9 @@
 			<thead class= "text-center bg-white"> 
 				<tr class="border border-bottom border-2 border-dark"> 
 					<th> PartidaId</th>
-					<th> Jugador 1ID</th>
-					<th> Jugador 2ID </th>
-					<th> Ganador</th>
+					<th> Jugador 1 </th>
+					<th> Jugador 2 </th>
+					<th> Ganador </th>
 					<th> Estado Partida </th>
 					<th> Turno Jugador </th>
 					<th> Fecha Inicio</th>
@@ -62,7 +62,7 @@
 			@if(ListaPartidas.Count == 0)
 			{
 				<tr> 
-					<td colspan="5" class="text-center fs-5 py-4" > No se han encontrado partidas </td>
+					<td colspan="10" class="text-center fs-5 py-4" > No se han encontrado partidas </td>
 				</tr>
 			}
 
@@ -73,8 +73,9 @@
 					<td> @partida.PartidaId </td>
 					<td> @partida.Jugador1Id </td>
 					<td> @partida.Jugador2Id</td>
+					<td> @partida.GanadorId </td>
 					<td> @partida.EstadoPartida</td>
-					<td> @partida.TurnoJugador</td>
+					<td> @partida.TurnoJugadorId</td>
 					<td> @partida.FechaInicio</td>
 					<td> @partida.FechaFin </td>
 					<td class="border">
