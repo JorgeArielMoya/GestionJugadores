@@ -33,6 +33,9 @@
 					<option value="Jugador2Id"> Jugador 2 </option>
 					<option value = "EstadoPartida"> Estado Partida</option>
 					<option value= "GanadorId"> Ganador </option>
+					<option value="TurnoJugadorId"> Turno Jugador </option>
+					<option value="FechaInicio"> Fecha Inicio </option>
+					<option value="FechaFin"> Fecha Fin </option>
 				</InputSelect>
 			</div>
 
@@ -67,22 +70,22 @@
 			}
 
 			<tbody>
-			@foreach (var partida in ListaPartidas)
-			{
-				<tr class="text-center border border-end">
-					<td> @partida.PartidaId </td>
-					<td> @partida.Jugador1Id </td>
-					<td> @partida.Jugador2Id</td>
-					<td> @partida.GanadorId </td>
-					<td> @partida.EstadoPartida</td>
-					<td> @partida.TurnoJugadorId</td>
-					<td> @partida.FechaInicio</td>
-					<td> @partida.FechaFin </td>
-					<td class="border">
-						<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
-					</td>
-				</tr>
-			}
+				@foreach (var partida in ListaPartidas)
+				{
+					<tr class="text-center border border-end">
+						<td> @partida.PartidaId </td>
+						<td> @partida.Jugador1Id </td>
+						<td> @partida.Jugador2Id</td>
+						<td> @partida.GanadorId </td>
+						<td> @partida.EstadoPartida</td>
+						<td> @partida.TurnoJugadorId</td>
+						<td> @partida.FechaInicio</td>
+						<td> @partida.FechaFin </td>
+						<td class="border">
+							<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
+						</td>
+					</tr>
+				}
 			</tbody>
 		</table>
 	</div>
@@ -125,6 +128,26 @@
 				else if (Filtro == nameof(Partidas.Jugador2Id) && int.TryParse(ValorFiltro, out int jugador2Id))
 				{
 					lista = lista.Where(p => p.Jugador2Id == jugador2Id).ToList();
+				}
+
+				else if (Filtro == nameof (Partidas.GanadorId) && int.TryParse (ValorFiltro, out int ganadorId))
+				{
+					lista = lista.Where(p => p.GanadorId == ganadorId).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.TurnoJugadorId) && int.TryParse(ValorFiltro, out int turnoJugadorId))
+				{
+					lista = lista.Where(p => p.TurnoJugadorId == turnoJugadorId).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.FechaInicio) && DateTime.TryParse(ValorFiltro, out DateTime fechaInicio))
+				{
+					lista = lista.Where(p => p.FechaInicio == fechaInicio).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.FechaFin) && DateTime.TryParse(ValorFiltro, out DateTime fechaFin))
+				{
+					lista = lista.Where(p => p.FechaFin == fechaFin).ToList();
 				}
 
 				else if (Filtro == nameof(Partidas.EstadoPartida))
