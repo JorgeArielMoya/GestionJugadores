@@ -12,7 +12,7 @@ public class Partidas
     public int? Jugador2Id { get; set; }
 
     [Required (ErrorMessage = "Campo Requerido")]
-    [StringLength(20)]
+    [StringLength(20, ErrorMessage = "Maximo 20 caracteres")]
     public string EstadoPartida { get; set; } = null!;
 
     public int? GanadorId { get; set; }
