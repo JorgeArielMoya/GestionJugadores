@@ -6,6 +6,141 @@
 
 <PageTitle> Index de partidas </PageTitle>
 
+<div class="container"> 
+	<div class="card shadow-lg">
+		<div class="card-header">
+			<h5 class="card-title text-center"> <strong> Registro De Partidas </strong> </h5>
+			<div align="right"> 
+				<a href="/Partidas/Create" class="btn btn-success bi bi-plus-square"> Crear </a>
+			</div>
+		</div>
+
+		<div class="row ms-1"> 
+			<div class=col-4>
+				<label class="col-form-label"> <strong> Filtrar por </strong></label>
+			</div>
+
+			<div class="col-3"> 
+				<label class="col-form-label"> <strong> Busqueda </strong></label>
+			</div>
+		</div>
+
+		<div class="row align-items-center"> 
+			<div class="col-3 ms-1"> 
+				<InputSelect class="form-select" @bind-Value = "Filtro"> 
+					<option value="PartidaId"> PartidaId </option>
+					<option value ="Jugador1Id"> Jugador1Id</option>
+					<option value="Jugador2Id"> Jugador2Id </option>
+					<option value = "EstadoPartida"> Estado Partida</option>
+					<option value= "GanadorId"> GanadorId </option>
+				</InputSelect>
+			</div>
+
+			<div class="col-4"> 
+				<div class="input-group"> 
+					<input class="form-control" @bind = "ValorFiltro" placeholder="Buscar"> 
+					<button class="btn btn-primary bi bi-search" @onclick = "Buscar"> Buscar </button>
+				</div>
+			</div>
+		</div>
+
+		<table class="table table-hover table-bordered mt-3 text-center">
+			<thead class= "text-center bg-white"> 
+				<tr class="border border-bottom border-2 border-dark"> 
+					<th> PartidaId</th>
+					<th> Jugador 1ID</th>
+					<th> Jugador 2ID </th>
+					<th> Ganador</th>
+					<th> Estado Partida </th>
+					<th> Turno Jugador </th>
+					<th> Fecha Inicio</th>
+					<th> Fecha Fin </th>
+					<th> Editar </th>
+				</tr>
+			</thead>
+
+			@if(ListaPartidas.Count == 0)
+			{
+				<tr> 
+					<td colspan="5" class="text-center fs-5 py-4" > No se han encontrado partidas </td>
+				</tr>
+			}
+
+			<tbody>
+			@foreach (var partida in ListaPartidas)
+			{
+				<tr class="text-center border border-end">
+					<td> @partida.PartidaId </td>
+					<td> @partida.Jugador1Id </td>
+					<td> @partida.Jugador2Id</td>
+					<td> @partida.EstadoPartida</td>
+					<td> @partida.TurnoJugador</td>
+					<td> @partida.FechaInicio</td>
+					<td> @partida.FechaFin </td>
+					<td class="border">
+						<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="card-footer space-between"> 
+		<label> <strong> Cantidad Partidas: </strong> @ListaPartidas.Count</label>
+	</div>
+</div>
+
 @code {
+	public List<Partidas> ListaPartidas { get; set; } = new List<Partidas>();
+
+	public string Filtro { get; set; } = "PartidaId";
+
+	public string ValorFiltro { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync ()
+	{
+		await Buscar();
+	}
+
+	private async Task Buscar () 
+	{
+		try 
+		{
+			var lista = await partidasService.Listar(p => true);
+
+			if (!string.IsNullOrWhiteSpace(ValorFiltro))
+			{
+				if (Filtro == nameof(Partidas.PartidaId) && int.TryParse(ValorFiltro, out int id))
+				{
+					lista = lista.Where(p => p.PartidaId == id).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.Jugador1Id) && int.TryParse(ValorFiltro, out int jugador1Id))
+				{
+					lista = lista.Where(p => p.Jugador1Id == jugador1Id).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.Jugador2Id) && int.TryParse(ValorFiltro, out int jugador2Id))
+				{
+					lista = lista.Where(p => p.Jugador2Id == jugador2Id).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.EstadoPartida))
+				{
+					lista = lista.Where(p => p.EstadoPartida != null && p.EstadoPartida.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+				}
+			}
+
+			ListaPartidas = lista;
+		}
+
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
+		}
+	}
+
+
 
 }
