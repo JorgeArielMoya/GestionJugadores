@@ -11,7 +11,7 @@ public class Partidas
     public int Jugador1Id { get; set; }
     public int? Jugador2Id { get; set; }
 
-    [Required (ErrorMessage = "Campo requerido")]
+    [Required (ErrorMessage = "Campo Requerido")]
     [StringLength(20)]
     public string EstadoPartida { get; set; } = null!;
 
@@ -19,6 +19,7 @@ public class Partidas
     public int TurnoJugadorId { get; set; }
 
     public DateTime FechaInicio { get; set; } = DateTime.UtcNow;
+
     public DateTime? FechaFin { get; set; }
 
     // Propiedades de navegación
