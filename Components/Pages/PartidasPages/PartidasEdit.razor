@@ -67,7 +67,7 @@
 					<div class="row">
 						<div class="col-3">
 							<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
-							<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId" onblur="onblur="@(async () => await SePuedeGanar())">
+							<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId" onblur="@(async () => await SePuedeGanar())">
 								<option> Seleccione un jugador </option>
 								@foreach (var jugador in ListaJugadores)
 								{
@@ -106,7 +106,7 @@
 					<div class="row">
 						<div class="col-3">
 							<label class="form-label mt-2" for="FechaFin"><strong> Fecha Fin: </strong></label>
-							<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin" onblur = @(async () => await ValidarFechaFin())"> </InputDate>
+							<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin" onblur ="@(async () => await ValidarFechaFin())"> </InputDate>
 						</div>
 					</div>
 
@@ -184,21 +184,23 @@ else
 	{
 		try
 		{
-			if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
+			if (Partida != null)
 			{
-				puedePonerGanador = false;
-				return;
-			}
+				if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
+				{
+					puedePonerGanador = false;
+					return;
+				}
 
-			puedePonerGanador = true;
-			StateHasChanged();
-			await InvokeAsync(StateHasChanged);
+				puedePonerGanador = true;
+				StateHasChanged();
+				await InvokeAsync(StateHasChanged);
+			}
 		}
 		catch(Exception e)
 		{
 			Console.WriteLine($"Error: {e.Message}");
 		}
-
 	}
 
 	public async Task EstadoEsValido()
@@ -207,15 +209,18 @@ else
 		{
 			var estadosValidos = new[] { "pendiente", "en progreso", "finalizada" };
 
-			if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+			if (Partida != null)
 			{
-				estadoValido = false;
-				return;
-			}
+				if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+				{
+					estadoValido = false;
+					return;
+				}
 
-			estadoValido = true;
-			StateHasChanged();
-			await InvokeAsync(StateHasChanged);
+				estadoValido = true;
+				StateHasChanged();
+				await InvokeAsync(StateHasChanged);
+			}
 		}
 		catch (Exception e)
 		{
@@ -225,15 +230,18 @@ else
 
 	private async Task ValidarFechaFin()
 	{
-		if (Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio)
+		if (Partida != null)
 		{
-			fechaFinValida = false;
-			return;
-		}
+			if ((Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio) || Partida.EstadoPartida.ToLower().Equals("finalizada"))
+			{
+				fechaFinValida = false;
+				return;
+			}
 
-		fechaFinValida = true;
-		StateHasChanged();
-		await InvokeAsync(StateHasChanged);
+			fechaFinValida = true;
+			StateHasChanged();
+			await InvokeAsync(StateHasChanged);
+		}
 	}
 
 	public async Task MostrarModal ()
