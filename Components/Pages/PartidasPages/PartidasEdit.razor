@@ -81,21 +81,27 @@
 
 					<div class="row">
 						<div class="col-3">
-							<label class="form-label" for="FechaInicio"><strong> Fecha Inicio: </strong></label>
+							<label class="form-label mt-2" for="FechaInicio"><strong> Fecha Inicio: </strong></label>
 							<InputDate id="FechaInicio" class="form-control" @bind-Value="Partida.FechaInicio"> </InputDate>
 						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-3">
-							<label class="form-label" for="FechaFin"><strong> Fecha Fin: </strong></label>
+							<label class="form-label mt-2" for="FechaFin"><strong> Fecha Fin: </strong></label>
 							<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin"> </InputDate>
 						</div>
 					</div>
-
 				</EditForm>
 			</div>
 		</div>
+	</div>
+}
+
+else 
+{
+	<div class="text-center">
+		<p> Cargando datos de la partida... </p>
 	</div>
 }
 
