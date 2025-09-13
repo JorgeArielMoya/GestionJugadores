@@ -1,12 +1,116 @@
 ﻿@page "/Partidas/Create"
 
+@inject JugadoresService jugadoresService
 @inject PartidasService partidasService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
 <PageTitle> Crear Nueva Partida </PageTitle>
 
+<div class="container mt-3"> 
+	<div class="card shadow-lg"> 
+		<div class="card-header text-center text-white bg-info"> 
+			<h5> <strong> Crear Nueva Partida </strong></h5>
+		</div>
+
+		<div class="card-body">
+			<EditForm Model = "Partida" OnvalidSubmit="GuardarPartida"> 
+				<DataAnnotationsValidator/>
+
+				<div class="row"> 
+					<div class="col-3"> 
+						<label for="PartidaId"> <strong> PartidaId: </strong></label>
+						<InputNumber id = "PartidaId" class = "form-control" @bind-Value = "@Partida.PartidaId" disabled/>
+					</div>
+				</div>
+
+				<div class="row"> 
+					<div class="col-3"> 
+						<label class="form-label mt-2" for="Jugador1Id"> <strong> Jugador 1ID:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value = "Partida.Jugador1Id">
+							<option> Seleccione un Jugador </option>
+							@foreach(var jugador in ListaJugadores)
+							{
+								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="Jugador2Id"> <strong> Jugador 2ID:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.Jugador2Id">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row"> 
+					<div class="col-5"> 
+						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Inactiva | En progreso | Finalizada): </strong></label>
+						<InputText id="EstadoPartida" class="form-control" @bind-Value = "Partida.EstadoPartida"> </InputText>
+						<ValidationMessage For="() => Partida.EstadoPartida" ></ValidationMessage>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="TurnoJugador"> <strong> Turno Jugador: </strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.TurnoJugador">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label" for="FechaInicio"><strong> Fecha Inicio: </strong></label>
+						<InputDate id="FechaInicio" class="form-control" @bind-Value="Partida.FechaInicio"> </InputDate>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label" for="FechaFin"><strong> Fecha Fin: </strong></label>
+						<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin"> </InputDate>
+					</div>
+				</div>
+
+				<div class="card-footer bg-white"> 
+					<div class="d-flex justify-content-end gap-2 mt-2">
+						<button type="submit" class="btn btn-success bi bi-floppy" @onclick = "GuardarPartida"> Guardar </button>
+						<a href="/Partidas/Index" class="btn btn-secondary bi bi-arrow-left"> Regresar </a>
+					</div>
+				</div>
+			</EditForm>
+		</div>
+	</div>
+</div>
 
 @code {
+	public Partidas Partida = new();
 
+	public List<Jugadores> ListaJugadores = [];
+
+	protected override async Task OnInitializedAsync ()
+	{
+		ListaJugadores = await jugadoresService.Listar(j => true);
+	}
+
+	private async Task GuardarPartida ()
+	{
+		if (await partidasService.Guardar(Partida))
+		{
+			navigationManager.NavigateTo("/Partidas/Index");
+		}
+	}
 }
