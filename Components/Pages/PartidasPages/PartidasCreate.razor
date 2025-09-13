@@ -65,11 +65,16 @@
 
 				<div class="row"> 
 					<div class="col-5"> 
-						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Inactiva | En progreso | Finalizada): </strong></label>
-						<InputText id="EstadoPartida" class="form-control" @bind-Value = "Partida.EstadoPartida"> </InputText>
+						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Pendiente | En progreso | Finalizada): </strong></label>
+						<InputText id="EstadoPartida" class="form-control" @bind-Value = "Partida.EstadoPartida" onblur="@(async () => await EstadoEsValido())"> </InputText>
 						<ValidationMessage For="() => Partida.EstadoPartida" ></ValidationMessage>
 					</div>
 				</div>
+
+				@if(!estadoValido)
+				{
+					<div class="text-danger"> @mensajeError </div>
+				}
 
 				<div class="row">
 					<div class="col-3">
@@ -114,16 +119,39 @@
 
 	public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
+	public string? mensajeError { get; set; } = string.Empty;
+
+	public bool estadoValido { get; set; } = true;
+
 	protected override async Task OnInitializedAsync ()
 	{
 		ListaJugadores = await jugadoresService.Listar(j => true);
 	}
 
+	public async Task EstadoEsValido()
+	{
+		var estadosValidos = new[] {"pendiente", "en progreso", "finalizada"};
+
+		if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+		{
+			estadoValido = false;
+			mensajeError = "Estado no valido"; 
+			return;
+		}
+
+		estadoValido = true;
+		StateHasChanged();
+		await InvokeAsync(StateHasChanged);
+	}
+
 	private async Task GuardarPartida ()
 	{
-		if (await partidasService.Guardar(Partida))
+		if (estadoValido)
 		{
-			navigationManager.NavigateTo("/Partidas/Index");
+			if (await partidasService.Guardar(Partida))
+			{
+				navigationManager.NavigateTo("/Partidas/Index");
+			}
 		}
 	}
 }
