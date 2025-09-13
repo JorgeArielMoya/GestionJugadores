@@ -1,0 +1,221 @@
+﻿@page "/Partidas/Create"
+
+@inject JugadoresService jugadoresService
+@inject PartidasService partidasService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle> Crear Nueva Partida </PageTitle>
+
+<div class="container mt-3"> 
+	<div class="card shadow-lg"> 
+		<div class="card-header text-center text-white bg-info"> 
+			<h5> <strong> Crear Nueva Partida </strong></h5>
+		</div>
+
+		<div class="card-body">
+			<EditForm Model = "Partida" OnvalidSubmit="GuardarPartida"> 
+				<DataAnnotationsValidator/>
+
+				<div class="row"> 
+					<div class="col-3"> 
+						<label for="PartidaId"> <strong> PartidaId: </strong></label>
+						<InputNumber id = "PartidaId" class = "form-control" @bind-Value = "@Partida.PartidaId" disabled/>
+					</div>
+				</div>
+
+				<div class="row"> 
+					<div class="col-3"> 
+						<label class="form-label mt-2" for="Jugador1Id"> <strong> Jugador 1ID:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value = "Partida.Jugador1Id">
+							<option> Seleccione un Jugador </option>
+							@foreach(var jugador in ListaJugadores)
+							{
+								@if(jugador.JugadorId != Partida.Jugador2Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="Jugador2Id"> <strong> Jugador 2ID:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.Jugador2Id">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								@if (jugador.JugadorId != Partida.Jugador1Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row"> 
+					<div class="col-6"> 
+						<label class="form-label mt-2" for="EstadoPartida" ><strong> Estado Partida (Pendiente | En progreso | Finalizada): </strong></label>
+						<InputText id="EstadoPartida" class="form-control" @bind-Value = "Partida.EstadoPartida" onblur="@(async () => await EstadoEsValido())"> </InputText>
+						<ValidationMessage For="() => Partida.EstadoPartida" ></ValidationMessage>
+					</div>
+				</div>
+
+				@if (!estadoValido)
+				{
+					<div class="text-danger"> Estado de partida no valido </div>
+				}
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId" onblur="@(async () => await SePuedeGanar())">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								@if ((jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id) && puedePonerGanador)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				@if (!puedePonerGanador)
+				{
+					<div class = "text-danger"> La partida debe haber finalizado </div>
+				}
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="TurnoJugador"> <strong> Turno Jugador: </strong> </label>
+						<InputSelect class="form-control form-select" @bind-Value="Partida.TurnoJugadorId">
+							<option> Seleccione un jugador </option>
+							@foreach (var jugador in ListaJugadores)
+							{
+								if (jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id)
+								{
+									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
+								}
+							}
+						</InputSelect>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="FechaInicio"><strong> Fecha Inicio: </strong></label>
+						<InputDate id="FechaInicio" class="form-control" @bind-Value="Partida.FechaInicio"> </InputDate>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label mt-2" for="FechaFin"><strong> Fecha Fin: </strong></label>
+						<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin" onblur="@(async () => await ValidarFechaFin())"> </InputDate>
+					</div>
+				</div>
+
+				@if (!fechaFinValida)
+				{
+					<div class="text-danger"> Fecha fin no valida  </div>
+				}
+
+				<div class="card-footer bg-white"> 
+					<div class="d-flex justify-content-end gap-2 mt-2">
+						<button type="submit" class="btn btn-success bi bi-floppy"> Guardar </button>
+						<a href="/Partidas/Index" class="btn btn-secondary bi bi-arrow-left"> Regresar </a>
+					</div>
+				</div>
+			</EditForm>
+		</div>
+	</div>
+</div>
+
+@code {
+	public Partidas Partida = new();
+
+	public List<Jugadores> ListaJugadores = new List<Jugadores>();
+
+	public bool estadoValido { get; set; } = true;
+
+	public bool fechaFinValida { get; set; } = true;
+
+	public bool puedePonerGanador { get; set; } = false;
+
+	protected override async Task OnInitializedAsync ()
+	{
+		ListaJugadores = await jugadoresService.Listar(j => true);
+	}
+
+	public async Task SePuedeGanar ()
+	{
+		try
+		{
+			if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
+			{
+				puedePonerGanador = false;
+				return;
+			}
+
+			puedePonerGanador = true;
+			StateHasChanged();
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
+		}
+	}
+
+	public async Task EstadoEsValido()
+	{
+		try
+		{
+			var estadosValidos = new[] {"pendiente", "en progreso", "finalizada"};
+
+			if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
+			{
+				estadoValido = false;
+				return;
+			}
+
+			estadoValido = true;
+			StateHasChanged();
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
+		}
+	}
+
+	private async Task ValidarFechaFin ()
+	{
+		if ((Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio))
+		{
+			fechaFinValida = false;
+		}
+
+		fechaFinValida = true;
+		StateHasChanged();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	private async Task GuardarPartida ()
+	{
+		await Task.Delay(1000);
+
+		if (estadoValido && fechaFinValida)
+		{
+			if (await partidasService.Guardar(Partida))
+			{
+				navigationManager.NavigateTo("/Partidas/Index");
+			}
+		}
+	}
+}
