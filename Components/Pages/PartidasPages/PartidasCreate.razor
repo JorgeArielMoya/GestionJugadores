@@ -154,15 +154,22 @@
 
 	public async Task SePuedeGanar ()
 	{
-		if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
+		try
 		{
-			puedePonerGanador = false;
-			return;
-		}
+			if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
+			{
+				puedePonerGanador = false;
+				return;
+			}
 
-		puedePonerGanador = true;
-		StateHasChanged();
-		await InvokeAsync(StateHasChanged);
+			puedePonerGanador = true;
+			StateHasChanged();
+			await InvokeAsync(StateHasChanged);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine($"Error: {e.Message}");
+		}
 	}
 
 	public async Task EstadoEsValido()
