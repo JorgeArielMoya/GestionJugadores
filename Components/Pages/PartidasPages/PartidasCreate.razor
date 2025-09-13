@@ -76,7 +76,7 @@
 							<option> Seleccione un jugador </option>
 							@foreach (var jugador in ListaJugadores)
 							{
-								@if (jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id)
+								@if ((jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id) && puedePonerGanador)
 								{
 									<option value="@jugador.JugadorId"> @jugador.Nombres</option>
 								}
