@@ -199,6 +199,7 @@
 		if ((Partida.FechaFin.HasValue && Partida.FechaFin < Partida.FechaInicio))
 		{
 			fechaFinValida = false;
+			return;
 		}
 
 		fechaFinValida = true;
