@@ -175,8 +175,6 @@ else
 
 	public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
-	public bool estadoValido { get; set; } = true;
-
 	public bool fechaFinValida { get; set; } = true;
 
 	public bool puedePonerGanador { get; set; } = false;
@@ -201,31 +199,6 @@ else
 			}
 		}
 		catch(Exception e)
-		{
-			Console.WriteLine($"Error: {e.Message}");
-		}
-	}
-
-	public async Task EstadoEsValido()
-	{
-		try
-		{
-			var estadosValidos = new[] { "pendiente", "en progreso", "finalizada" };
-
-			if (Partida != null)
-			{
-				if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
-				{
-					estadoValido = false;
-					return;
-				}
-
-				estadoValido = true;
-				StateHasChanged();
-				await InvokeAsync(StateHasChanged);
-			}
-		}
-		catch (Exception e)
 		{
 			Console.WriteLine($"Error: {e.Message}");
 		}
@@ -277,7 +250,7 @@ else
 
 		if (Partida != null)
 		{
-			if (estadoValido && fechaFinValida)
+			if (fechaFinValida)
 			{
 				if (await partidasService.Guardar(Partida))
 				{
