@@ -74,12 +74,12 @@
 				{
 					<tr class="text-center border border-end">
 						<td> @partida.PartidaId </td>
-						<td> @partida.Jugador1Id </td>
-						<td> @partida.Jugador2Id</td>
-						<td> @partida.GanadorId </td>
+						<td>@partida.Jugador1?.Nombres</td>       
+						<td>@partida.Jugador2?.Nombres</td>
+						<td>@partida.Ganador?.Nombres</td>
 						<td> @partida.EstadoPartida</td>
-						<td> @partida.TurnoJugadorId</td>
-						<td> @partida.FechaInicio</td>
+						<td>@partida.TurnoJugador?.Nombres</td>
+						<td> @partida.FechaInicio </td>
 						<td> @partida.FechaFin </td>
 						<td class="border">
 							<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
@@ -130,7 +130,7 @@
 					lista = lista.Where(p => p.Jugador2Id == jugador2Id).ToList();
 				}
 
-				else if (Filtro == nameof (Partidas.GanadorId) && int.TryParse (ValorFiltro, out int ganadorId))
+				else if (Filtro == nameof(Partidas.GanadorId) && int.TryParse(ValorFiltro, out int ganadorId))
 				{
 					lista = lista.Where(p => p.GanadorId == ganadorId).ToList();
 				}
@@ -156,7 +156,10 @@
 				}
 			}
 
-			ListaPartidas = lista;
+			else
+			{
+				ListaPartidas = lista;
+			}
 		}
 
 		catch (Exception e)
