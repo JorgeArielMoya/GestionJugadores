@@ -52,17 +52,16 @@
 					</div>
 
 					<div class="row">
-						<div class="col-5">
-							<label class="form-label mt-2" for="EstadoPartida"><strong> Estado Partida (Pendiente | En progreso | Finalizada): </strong></label>
-							<InputText id="EstadoPartida" class="form-control" @bind-Value="Partida.EstadoPartida" onblur="@(async () => await EstadoEsValido())"> </InputText>
-							<ValidationMessage For="() => Partida.EstadoPartida"></ValidationMessage>
+						<div class="col-4">
+							<label class="form-label mt-2" for="EstadoPartida"><strong> Estado Partida: </strong></label>
+							<InputSelect class="form-control" @bind-Value="Partida.EstadoPartida">
+								<option value="Pendiente"> Pendiente </option>
+								<option value="En progreso"> En progreso </option>
+								<option value="Finalizada"> Finalizada </option>
+							</InputSelect>
+							<ValidationMessage For="() => Partida.EstadoPartida"> </ValidationMessage>
 						</div>
 					</div>
-
-					@if (!estadoValido)
-					{
-						<div class="text-danger"> Estado de partida no valido </div>
-					}
 
 					<div class="row">
 						<div class="col-3">
@@ -109,6 +108,11 @@
 							<InputDate id="FechaFin" class="form-control" @bind-Value="Partida.FechaFin" onblur ="@(async () => await ValidarFechaFin())"> </InputDate>
 						</div>
 					</div>
+
+					@if(!fechaFinValida)
+					{
+						<div class="text-danger"> Fecha fin no valida </div>
+					}
 
 					@*Botones*@
 					<div class="card-footer d-flex justify-content-end gap-2 mt-2 bg-light">
@@ -171,8 +175,6 @@ else
 
 	public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
-	public bool estadoValido { get; set; } = true;
-
 	public bool fechaFinValida { get; set; } = true;
 
 	public bool puedePonerGanador { get; set; } = false;
@@ -197,31 +199,6 @@ else
 			}
 		}
 		catch(Exception e)
-		{
-			Console.WriteLine($"Error: {e.Message}");
-		}
-	}
-
-	public async Task EstadoEsValido()
-	{
-		try
-		{
-			var estadosValidos = new[] { "pendiente", "en progreso", "finalizada" };
-
-			if (Partida != null)
-			{
-				if (!estadosValidos.Contains(Partida.EstadoPartida.ToLower()))
-				{
-					estadoValido = false;
-					return;
-				}
-
-				estadoValido = true;
-				StateHasChanged();
-				await InvokeAsync(StateHasChanged);
-			}
-		}
-		catch (Exception e)
 		{
 			Console.WriteLine($"Error: {e.Message}");
 		}
@@ -273,7 +250,7 @@ else
 
 		if (Partida != null)
 		{
-			if (estadoValido && fechaFinValida)
+			if (fechaFinValida)
 			{
 				if (await partidasService.Guardar(Partida))
 				{
