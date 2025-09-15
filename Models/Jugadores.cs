@@ -11,5 +11,5 @@ public class Jugadores
     public String Nombres { get; set; } = null!;
 
     [Range(0, int.MaxValue, ErrorMessage = "Numero de partidas no valido")]
-    public int Partidas { get; set; }
+    public int Victorias { get; set; }
 }
