@@ -35,13 +35,13 @@
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<label for="partidas" class="form-label mt-1"> <strong> Partidas: </strong> </label>
-								<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Partidas" />
-								<ValidationMessage For="() => Jugador.Partidas"> </ValidationMessage>
+								<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Victorias" />
+								<ValidationMessage For="() => Jugador.Victorias"> </ValidationMessage>
 							</div>
 						</div>
 
 						@*Botones*@
-						<div class="card-footer d-flex justify-content-end gap-2 mt-2 bg-light"> 
+						<div class="card-footer d-flex justify-content-center gap-2 mt-2 bg-light"> 
 							<button type="submit" class="btn btn-primary bi bi-floppy"> Guardar Cambios </button>
 							<button  type ="button" class="btn btn-danger bi bi-trash" @onclick = "MostrarModal"> Eliminar </button>
 							<a href="/Jugador/Index" class="btn btn-secondary bi bi-arrow-left"> Regresar </a>
@@ -74,7 +74,7 @@ else
 					<h6> <strong> Datos Del Jugador </strong> </h6>
 					<div> <strong> Jugador Id: </strong> @Jugador.JugadorId </div>
 					<div> <strong> Nombre: </strong> @Jugador.Nombres </div>
-					<div> <strong> Partidas: </strong> @Jugador.Partidas</div>
+					<div> <strong> Partidas: </strong> @Jugador.Victorias</div>
 					<div class="text-danger mt-3"> ¿Está seguro que desea eliminar este jugador? </div>
 				</div>
 

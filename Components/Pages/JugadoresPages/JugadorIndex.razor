@@ -12,7 +12,7 @@
 		<div class="card-header">
 			<h5 class="card-title text-center"> <strong> Registro De Jugadores </strong> </h5>
 			<div align = "right">
-				<a href="/Jugador/Create" class="btn btn-success"> <span class="bi bi-plus-square mt-3"> </span> Crear </a>
+				<a href="/Jugador/Create" class="btn btn-primary bi bi-plus-square mt-3"> Crear </a>
 			</div>
 		</div>
 
@@ -64,7 +64,7 @@
 					<tr class="text-center border border-end">
 						<td class="border"> @jugador.JugadorId </td>
 						<td class="border"> @jugador.Nombres </td>
-						<td class="border"> @jugador.Partidas.ToString() </td>
+						<td class="border"> @jugador.Victorias.ToString() </td>
 
 						<td class="border">
 							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
@@ -83,7 +83,7 @@
 			</div>
 			
 		<div class="col-2">
-			<label> <strong> Total partidas: </strong> @ListaJugadores.Sum(j => j.Partidas)</label>
+			<label> <strong> Total partidas: </strong> @ListaJugadores.Sum(j => j.Victorias)</label>
 		</div>
 		</div>
 	</div>
