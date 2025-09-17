@@ -37,13 +37,13 @@ public class Contexto : DbContext
 
         modelBuilder.Entity<Movimientos>()
         .HasOne(m => m.Partida) 
-        .WithMany(p => p.Movimiento)          
+        .WithMany(p => p.Movimientos)          
         .HasForeignKey(m => m.PartidaId)
         .OnDelete(DeleteBehavior.Cascade);     
 
         modelBuilder.Entity<Movimientos>()
             .HasOne(m => m.Jugador)               
-            .WithMany(j => j.Movimiento)   
+            .WithMany(j => j.Movimientos)   
             .HasForeignKey(m => m.JugadorId)
             .OnDelete(DeleteBehavior.Restrict);
 

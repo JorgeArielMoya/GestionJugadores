@@ -18,6 +18,6 @@ public class Jugadores
 
     public int Empates { get; set; } = 0;
 
-    [InverseProperty(nameof(Movimientos.Jugador))]
-    public virtual ICollection<Movimientos> Movimiento { get; set; } = new List<Movimientos>();    
+    [InverseProperty(nameof(Models.Movimientos.Jugador))]
+    public virtual ICollection<Movimientos> Movimientos { get; set; } = new List<Movimientos>();    
 }
