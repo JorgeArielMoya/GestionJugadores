@@ -45,7 +45,7 @@ namespace GestionJugadores.Migrations
 
                     b.HasKey("JugadorId");
 
-                    b.ToTable("Jugadores");
+                    b.ToTable("Jugadores", (string)null);
                 });
 
             modelBuilder.Entity("GestionJugadores.Models.Partidas", b =>
@@ -89,7 +89,7 @@ namespace GestionJugadores.Migrations
 
                     b.HasIndex("TurnoJugadorId");
 
-                    b.ToTable("Partidas");
+                    b.ToTable("Partidas", (string)null);
                 });
 
             modelBuilder.Entity("GestionJugadores.Models.Partidas", b =>
