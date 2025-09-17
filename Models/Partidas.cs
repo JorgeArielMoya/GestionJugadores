@@ -35,5 +35,5 @@ public class Partidas
     [ForeignKey(nameof(TurnoJugadorId))]
     public virtual Jugadores TurnoJugador { get; set; }
 
-    public virtual ICollection<Movimientos> Movimientos { get; set; } = new List<Movimientos>();
+    public virtual ICollection<Movimientos> Movimiento { get; set; } = new List<Movimientos>();
 }
