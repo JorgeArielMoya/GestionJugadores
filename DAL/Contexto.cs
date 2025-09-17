@@ -36,16 +36,17 @@ public class Contexto : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Movimientos>()
-        .HasOne<Partidas>()             
-        .WithMany(p => p.Movimiento)    
+        .HasOne(m => m.Partida) 
+        .WithMany(p => p.Movimiento)          
         .HasForeignKey(m => m.PartidaId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.Cascade);     
 
         modelBuilder.Entity<Movimientos>()
-            .HasOne<Jugadores>()                 
-            .WithMany()                      
+            .HasOne(m => m.Jugador)               
+            .WithMany(j => j.Movimiento)   
             .HasForeignKey(m => m.JugadorId)
             .OnDelete(DeleteBehavior.Restrict);
+
 
         base.OnModelCreating(modelBuilder);
     }
