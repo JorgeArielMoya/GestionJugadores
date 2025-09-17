@@ -6,8 +6,8 @@ namespace GestionJugadores.DAL;
 public class Contexto : DbContext
 {
     public DbSet<Jugadores> Jugadores { get; set; }
-
     public DbSet<Partidas> Partidas { get; set; }
+    public DbSet<Movimientos> Movimientos { get; set; } 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,6 +33,18 @@ public class Contexto : DbContext
             .HasOne(p => p.TurnoJugador)
             .WithMany()  
             .HasForeignKey(p => p.TurnoJugadorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Movimientos>()
+        .HasOne<Partidas>()             
+        .WithMany(p => p.Movimiento)    
+        .HasForeignKey(m => m.PartidaId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Movimientos>()
+            .HasOne<Jugadores>()                 
+            .WithMany()                      
+            .HasForeignKey(m => m.JugadorId)
             .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(modelBuilder);
