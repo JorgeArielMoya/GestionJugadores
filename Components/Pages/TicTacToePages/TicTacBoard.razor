@@ -18,8 +18,8 @@
                 {
                     var cellIndex = i; // Copia local para evitar problemas con el closure en el lambda
                     <button class="cell @GetPlayerClass(board[cellIndex])"
-                            @onclick="() => HandleCellClick(cellIndex)"
-                            disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
+                    @onclick="() => HandleCellClick(cellIndex)"
+                    disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
                         @board[cellIndex]?.ToString()
                     </button>
                 }
@@ -58,11 +58,29 @@
 
     private async void HandleCellClick(int index)
     {
-        if (board[index] != null || winner != null || esEmpate)
-            return;
+        if (board[index] != null || winner != null || esEmpate) return;
 
         board[index] = _currentPlayerType;
 
+        var partida = await partidasService.Buscar(PartidaId);
+
+        if (partida != null)
+        {
+            var jugadorId = (_currentPlayerType == PlayerType.X)
+            ? partida.Jugador1Id
+            : partida.Jugador2Id ?? 0;
+
+            var movimiento = new Movimientos()
+            {
+                PartidaId = PartidaId,
+                JugadorId = jugadorId, 
+                PosicionFila = index / 3, 
+                PosicionColumna = index % 3, 
+                FechaMovimiento = DateTime.Now
+            };
+
+            await movimientosService.Guardar(movimiento);
+        }
         winner = CheckForWinner();
 
         if (winner != null)
@@ -85,6 +103,7 @@
     private async Task FinalizarPartida(PlayerType? ganador)
     {
         var partida = await partidasService.Buscar(PartidaId);
+
         if (partida == null) return;
 
         partida.EstadoPartida = "Finalizada";
@@ -148,7 +167,7 @@
 
     public async Task RegistrarResultado(int jugadorId, Resultado resultado)
     {
-        var jugador = await jugadoresService.Buscar(jugadorId); // 👈 siempre via service
+        var jugador = await jugadoresService.Buscar(jugadorId);
         if (jugador == null) return;
 
         switch (resultado)
