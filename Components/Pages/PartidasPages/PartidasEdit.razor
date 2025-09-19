@@ -66,11 +66,11 @@
 					<div class="row">
 						<div class="col-3">
 							<label class="form-label mt-2" for="GanadorId"> <strong> Ganador Id:</strong> </label>
-							<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId" onblur="@(async () => await SePuedeGanar())">
+							<InputSelect class="form-control form-select" @bind-Value="Partida.GanadorId">
 								<option> Seleccione un jugador </option>
 								@foreach (var jugador in ListaJugadores)
 								{
-									@if ((jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id) && puedePonerGanador)
+									@if ((jugador.JugadorId == Partida.Jugador1Id || jugador.JugadorId == Partida.Jugador2Id) && Partida.EstadoPartida.Equals("Finalizada"))
 									{
 										<option value="@jugador.JugadorId"> @jugador.Nombres</option>
 									}
@@ -177,32 +177,7 @@ else
 
 	public bool fechaFinValida { get; set; } = true;
 
-	public bool puedePonerGanador { get; set; } = false;
-
 	public bool mostrarModalEliminar { get; set; } = false;
-
-	public async Task SePuedeGanar()
-	{
-		try
-		{
-			if (Partida != null)
-			{
-				if (!Partida.EstadoPartida.ToLower().Equals("finalizada"))
-				{
-					puedePonerGanador = false;
-					return;
-				}
-
-				puedePonerGanador = true;
-				StateHasChanged();
-				await InvokeAsync(StateHasChanged);
-			}
-		}
-		catch(Exception e)
-		{
-			Console.WriteLine($"Error: {e.Message}");
-		}
-	}
 
 	private async Task ValidarFechaFin()
 	{
