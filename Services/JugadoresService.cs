@@ -39,7 +39,7 @@ public class JugadoresService (IDbContextFactory<Contexto> DbFactory)
         return await contexto.SaveChangesAsync() > 0;
     }
 
-    public async Task <bool> Modificar (Jugadores jugador)
+    private async Task <bool> Modificar (Jugadores jugador)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         contexto.Update(jugador);
