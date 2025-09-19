@@ -2,7 +2,6 @@
 using GestionJugadores.DAL;
 using GestionJugadores.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace GestionJugadores.Services;
 
