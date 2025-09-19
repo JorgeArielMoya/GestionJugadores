@@ -8,46 +8,42 @@
 <PageTitle>Index</PageTitle>
 
 <div class="container mx-auto max-w-lg p-6 bg-white rounded-lg shadow-xl text-center">
-
     <div class="game-container">
-        @if (!gameStarted)
-        {
-            <!-- PANTALLA DE SELECCIÓN DE JUGADOR -->
-            <div class="selection-screen">
-                <h1>Elige tu jugador</h1>
-                <div class="row"> 
-                    <div class="col-10">
-                        <label class="form-label"><strong>Jugador X:</strong></label>
-                        <InputSelect class="form-control" @bind-Value="JugadorXId">
-                            <option value="" selected disabled> Seleccione Jugador X </option>
-                            @foreach (var jugador in ListaJugadores)
-                            {
-                                <option value="@jugador.JugadorId" disabled = "@(jugador.JugadorId == JugadorOId)">@jugador.Nombres</option>
-                            }
-                        </InputSelect>
-                    </div>
+        <!-- PANTALLA DE SELECCIÓN DE JUGADOR -->
+        <div class="selection-screen">
+            <h1>Elige tu jugador</h1>
+            <div class="row"> 
+                <div class="col-8">
+                    <label class="form-label"><strong>Jugador X:</strong></label>
+                    <InputSelect class="form-control" @bind-Value="JugadorXId">
+                        <option value="" selected disabled> Seleccione Jugador X </option>
+                        @foreach (var jugador in ListaJugadores)
+                        {
+                            <option value="@jugador.JugadorId" disabled = "@(jugador.JugadorId == JugadorOId)">@jugador.Nombres</option>
+                        }
+                    </InputSelect>
                 </div>
-
-                <div class="row mt-2">
-                    <div class="col-10">
-                        <label class="form-label"><strong>Jugador O:</strong></label>
-                        <InputSelect class="form-control" @bind-Value="JugadorOId">
-                            <option value="" selected disabled> Seleccione Jugador O </option>
-                            @foreach (var jugador in ListaJugadores)
-                            {
-                                <option value="@jugador.JugadorId" disabled="@(jugador.JugadorId == JugadorXId)">@jugador.Nombres</option>
-                            }
-                        </InputSelect>
-                    </div>
-                </div>
-
-                <button class="btn btn-success btn-lg mt-4"
-                disabled= "@(!JugadorXId.HasValue || !JugadorOId.HasValue)"
-                @onclick="StartGame">
-                    Iniciar Partida
-                </button>
             </div>
-        }
+
+            <div class="row mt-2">
+                <div class="col-8">
+                    <label class="form-label"><strong>Jugador O:</strong></label>
+                    <InputSelect class="form-control" @bind-Value="JugadorOId">
+                        <option value="" selected disabled> Seleccione Jugador O </option>
+                        @foreach (var jugador in ListaJugadores)
+                        {
+                            <option value="@jugador.JugadorId" disabled="@(jugador.JugadorId == JugadorXId)">@jugador.Nombres</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+
+            <button class="btn btn-success btn-lg mt-4"
+            disabled= "@(!JugadorXId.HasValue)"
+            @onclick="StartGame">
+                Iniciar Partida
+            </button>
+        </div>
     </div>
 </div>
 @code {
@@ -56,13 +52,8 @@
     private int? JugadorXId { get; set; }
     private int? JugadorOId { get; set; }
 
-    private bool gameStarted;
     private PlayerType? playerTypeSelection;
-    private PlayerType?[] board = new PlayerType?[9];
-    private PlayerType _currentPlayerType = PlayerType.X;
-    private PlayerType? winner;
-    private bool esEmpate;
-
+    
     public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
     protected override async Task OnInitializedAsync ()
@@ -83,9 +74,6 @@
 
     private void StartGame()
     {
-        if (JugadorXId.HasValue)
-        {
-            navigationManager.NavigateTo("/TicTac/Board");
-        }
+        navigationManager.NavigateTo("/TicTac/Board");
     }
 }
