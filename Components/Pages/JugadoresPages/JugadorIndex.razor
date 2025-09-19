@@ -47,7 +47,9 @@
 				<tr class="border-bottom border-2 border-dark">
 					<th> JugadorId</th>
 					<th> Nombres </th>
-					<th> Partidas </th>
+					<th> Victorias </th>
+					<th> Derrotas </th>
+					<th> Empates </th>
 					<th> Editar </th>
 				</tr>
 			</thead>
@@ -65,7 +67,8 @@
 						<td class="border"> @jugador.JugadorId </td>
 						<td class="border"> @jugador.Nombres </td>
 						<td class="border"> @jugador.Victorias.ToString() </td>
-
+						<td class = "border"> @jugador.Derrotas.ToString() </td>
+						<td class="border"> @jugador.Empates.ToString()</td>
 						<td class="border">
 							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
 						</td>
