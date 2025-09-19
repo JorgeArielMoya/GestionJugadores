@@ -136,7 +136,7 @@
             }
         }
 
-        await partidasService.Modificar(partida);
+        await partidasService.Guardar(partida); // Entraria a modificar
     }
 
     public enum Resultado
@@ -164,7 +164,7 @@
                 break;
         }
 
-        await jugadoresService.Modificar(jugador); // 👈 también via service
+        await jugadoresService.Guardar(jugador); // Entraria a modificar 
     }
 
     private PlayerType? CheckForWinner()
