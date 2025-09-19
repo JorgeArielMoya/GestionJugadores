@@ -13,7 +13,7 @@
         <div class="selection-screen">
             <h1>Elige tu jugador</h1>
             <div class="row"> 
-                <div class="col-8">
+                <div class="col-9">
                     <label class="form-label"><strong>Jugador X:</strong></label>
                     <InputSelect class="form-control" @bind-Value="JugadorXId">
                         <option value="" selected disabled> Seleccione Jugador X </option>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="row mt-2">
-                <div class="col-8">
+                <div class="col-9">
                     <label class="form-label"><strong>Jugador O:</strong></label>
                     <InputSelect class="form-control" @bind-Value="JugadorOId">
                         <option value="" selected disabled> Seleccione Jugador O </option>
@@ -53,7 +53,7 @@
     private int? JugadorOId { get; set; }
 
     private PlayerType? playerTypeSelection;
-    
+
     public List<Jugadores> ListaJugadores = new List<Jugadores>();
 
     protected override async Task OnInitializedAsync ()
@@ -72,8 +72,27 @@
         playerTypeSelection = PlayerType.X;
     }
 
-    private void StartGame()
+    private async void StartGame()
     {
-        navigationManager.NavigateTo("/TicTac/Board");
+        if (!JugadorXId.HasValue)
+        {
+            return;
+        }
+
+        var nuevaPartida = new Partidas()
+        {
+            Jugador1Id = JugadorXId.Value,
+            Jugador2Id = JugadorOId.Value,
+            EstadoPartida = "En progeso",
+            GanadorId = null,
+            TurnoJugadorId = JugadorXId.Value,
+            EstadoTablero = "---------",
+            FechaInicio = DateTime.Now
+        };
+
+        if (await partidasService.Guardar(nuevaPartida))
+        {
+            navigationManager.NavigateTo("/TicTac/Board");
+        }
     }
 }
