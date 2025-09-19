@@ -33,7 +33,7 @@ public class PartidasService (IDbContextFactory<Contexto> DbFactory)
         return await contexto.SaveChangesAsync() > 0;
     }
 
-    private async Task<bool> Modificar (Partidas partida)
+    public async Task<bool> Modificar (Partidas partida)
     {
         await using var contexto = await DbFactory.CreateDbContextAsync();
         contexto.Update(partida);
