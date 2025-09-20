@@ -87,7 +87,7 @@
             GanadorId = null,
             TurnoJugadorId = JugadorXId.Value,
             EstadoTablero = "---------",
-            FechaInicio = DateTime.UtcNow
+            FechaInicio = DateTime.Now
         };
 
         if (await partidasService.Guardar(nuevaPartida))
