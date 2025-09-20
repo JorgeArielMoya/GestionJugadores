@@ -147,7 +147,7 @@
         }
 
         partida.EstadoPartida = "Finalizada";
-        partida.FechaFin = DateTime.UtcNow;
+        partida.FechaFin = DateTime.Now;
         partida.EstadoTablero = string.Join("", board.Select(c => c?.ToString() ?? "-"));
 
         if (ganador.HasValue)
@@ -195,7 +195,7 @@
             }
         }
 
-        await partidasService.Guardar(partida); // Entraria a modificar
+        await partidasService.Guardar(partida); 
     }
 
     private PlayerType? CheckForWinner()
