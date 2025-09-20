@@ -56,7 +56,7 @@
         }
     }
 
-    private async void HandleCellClick(int index)
+    private async Task HandleCellClick(int index)
     {
         if (board[index] != null || winner != null || esEmpate) return;
 
@@ -81,11 +81,13 @@
 
             await movimientosService.Guardar(movimiento);
         }
+
         winner = CheckForWinner();
 
         if (winner != null)
         {
             await FinalizarPartida(winner.Value);
+            StateHasChanged();
             return;
         }
 
@@ -94,10 +96,12 @@
         if (esEmpate)
         {
             await FinalizarPartida(null);
+            StateHasChanged();
             return;
         }
 
         _currentPlayerType = (_currentPlayerType == PlayerType.X) ? PlayerType.O : PlayerType.X;
+        StateHasChanged();
     }
 
     private async Task FinalizarPartida(PlayerType? ganador)
