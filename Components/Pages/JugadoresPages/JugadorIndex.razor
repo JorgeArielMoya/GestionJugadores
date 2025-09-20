@@ -17,24 +17,24 @@
 		</div>
 
 		<div class="row">
-			<div class="col-4"> 
-				<label class="col-form-label ms-1"> <strong>Filtrar por </strong></label>
+			<div class="col-12 col-md-4">
+				<label class="col-form-label ms-md-1"> <strong>Filtrar por </strong></label>
 			</div>
-			<div class="col-3"> 
+			<div class="col-12 col-md-3">
 				<label class="col-form-label"> <strong> Búsqueda </strong> </label>
 			</div>
 		</div>
 
 		@*Filtros*@
 		<div class="row align-items-center"> 
-			<div class="col-3 ms-1"> 
+			<div class="col-12 col-md-3 mb-2">
 				<InputSelect class="form-select" @bind-value = "Filtro"> 
 					<option value="JugadorId"> JugadorId</option>
 					<option value = "Nombres"> Nombres</option>
 				</InputSelect>
 			</div>
 
-			<div class="col-4"> 
+			<div class="col-12 col-md-4">
 				<div class = "input-group"> 
 					<input class="form-control" @bind = "ValorFiltro" placeholder = "Buscar" /> 
 					<button class="btn btn-outline-primary bi bi-search" @onclick = "Buscar"> Buscar </button>
@@ -42,50 +42,52 @@
 			</div>
 		</div>
 
-		<table class="table table-hover table-bordered mt-3 text-center"> 
-			<thead class="text-black bg-white">
-				<tr class="border-bottom border-2 border-dark">
-					<th> JugadorId</th>
-					<th> Nombres </th>
-					<th> Victorias </th>
-					<th> Derrotas </th>
-					<th> Empates </th>
-					<th> Editar </th>
-				</tr>
-			</thead>
+		<div class = "table-responsive">
+			<table class="table table-hover table-bordered mt-3 text-center"> 
+				<thead class="text-black bg-white">
+					<tr class="border-bottom border-2 border-dark">
+						<th> JugadorId</th>
+						<th> Nombres </th>
+						<th> Victorias </th>
+						<th> Derrotas </th>
+						<th> Empates </th>
+						<th> Editar </th>
+					</tr>
+				</thead>
 
-			@if (ListaJugadores.Count == 0)
-			{
-				<tr>
-					<td colspan="5" class="text-center fs-5 py-4"> No se han encontrado jugadores  </td>
-				</tr>
-			}
-			<tbody> 
-				@foreach (var jugador in ListaJugadores)
+				@if (ListaJugadores.Count == 0)
 				{
-					<tr class="text-center border border-end">
-						<td class="border"> @jugador.JugadorId </td>
-						<td class="border"> @jugador.Nombres </td>
-						<td class="border"> @jugador.Victorias.ToString() </td>
-						<td class = "border"> @jugador.Derrotas.ToString() </td>
-						<td class="border"> @jugador.Empates.ToString()</td>
-						<td class="border">
-							<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
-						</td>
+					<tr>
+						<td colspan="5" class="text-center fs-5 py-4"> No se han encontrado jugadores  </td>
 					</tr>
 				}
-			</tbody>
-		</table>
+				<tbody> 
+					@foreach (var jugador in ListaJugadores)
+					{
+						<tr class="text-center border border-end">
+							<td class="border"> @jugador.JugadorId </td>
+							<td class="border"> @jugador.Nombres </td>
+							<td class="border"> @jugador.Victorias.ToString() </td>
+							<td class = "border"> @jugador.Derrotas.ToString() </td>
+							<td class="border"> @jugador.Empates.ToString()</td>
+							<td class="border">
+								<a href="/Jugador/Edit/@jugador.JugadorId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	@*Footer*@
 	<div class="card-footer space-between"> 
 		<div class="row">
-			<div class="col-3">
+			<div class="col-12 col-md-3 mb-2">
 				<label> <strong> Total jugadores: </strong> @ListaJugadores.Count()</label>
 			</div>
 			
-			<div class="col-2">
+			<div class="col-12 col-md-3 mb-2">
 				<label> <strong> Total partidas: </strong> @ListaJugadores.Sum(j => j.Victorias)</label>
 			</div>
 		</div>

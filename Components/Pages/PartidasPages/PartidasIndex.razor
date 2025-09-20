@@ -16,17 +16,17 @@
 		</div>
 
 		<div class="row ms-1"> 
-			<div class=col-4>
+			<div class="col-12 col-md-4">
 				<label class="col-form-label"> <strong> Filtrar por </strong></label>
 			</div>
 
-			<div class="col-3"> 
+			<div class="col-12 col-md-3">
 				<label class="col-form-label"> <strong> Búsqueda </strong></label>
 			</div>
 		</div>
 
 		<div class="row align-items-center"> 
-			<div class="col-3 ms-1"> 
+			<div class="col-12 col-md-3 mb-2">
 				<InputSelect class="form-select" @bind-Value = "Filtro"> 
 					<option value="PartidaId"> PartidaId </option>
 					<option value ="Jugador1Id"> Jugador 1</option>
@@ -39,7 +39,7 @@
 				</InputSelect>
 			</div>
 
-			<div class="col-4"> 
+			<div class="col-12 col-md-4">
 				<div class="input-group"> 
 					<input class="form-control" @bind = "ValorFiltro" placeholder="Buscar"> 
 					<button class="btn btn-primary bi bi-search" @onclick = "Buscar"> Buscar </button>
@@ -47,53 +47,59 @@
 			</div>
 		</div>
 
-		<table class="table table-hover table-bordered mt-3 text-center">
-			<thead class= "text-center bg-white"> 
-				<tr class="border border-bottom border-2 border-dark"> 
-					<th> PartidaId</th>
-					<th> Jugador 1 </th>
-					<th> Jugador 2 </th>
-					<th> Ganador </th>
-					<th> Estado Partida </th>
-					<th> Turno Jugador </th>
-					<th> Estado Tablero </th>
-					<th> Fecha Inicio</th>
-					<th> Fecha Fin </th>
-					<th> Editar </th>
-				</tr>
-			</thead>
+		<div class="table-responsive">
+			<table class="table table-hover table-bordered mt-3 text-center">
+				<thead class= "text-center bg-white"> 
+					<tr class="border border-bottom border-2 border-dark"> 
+						<th> PartidaId</th>
+						<th> Jugador 1 </th>
+						<th> Jugador 2 </th>
+						<th> Ganador </th>
+						<th> Estado Partida </th>
+						<th> Turno Jugador </th>
+						<th> Estado Tablero </th>
+						<th> Fecha Inicio</th>
+						<th> Fecha Fin </th>
+						<th> Editar </th>
+					</tr>
+				</thead>
 
-			@if(ListaPartidas.Count == 0)
-			{
-				<tr> 
-					<td colspan="10" class="text-center fs-5 py-4" > No se han encontrado partidas </td>
-				</tr>
-			}
-
-			<tbody>
-				@foreach (var partida in ListaPartidas)
+				@if(ListaPartidas.Count == 0)
 				{
-					<tr class="text-center border border-end">
-						<td> @partida.PartidaId </td>
-						<td>@partida.Jugador1?.Nombres</td>       
-						<td>@partida.Jugador2?.Nombres</td>
-						<td>@partida.Ganador?.Nombres</td>
-						<td> @partida.EstadoPartida</td>
-						<td>@partida.TurnoJugador?.Nombres</td>
-						<td> @partida.EstadoTablero </td>
-						<td> @partida.FechaInicio </td>
-						<td> @partida.FechaFin </td>
-						<td class="border">
-							<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
-						</td>
+					<tr> 
+						<td colspan="10" class="text-center fs-5 py-4" > No se han encontrado partidas </td>
 					</tr>
 				}
-			</tbody>
-		</table>
+
+				<tbody>
+					@foreach (var partida in ListaPartidas)
+					{
+						<tr class="text-center border border-end">
+							<td> @partida.PartidaId </td>
+							<td>@partida.Jugador1?.Nombres</td>       
+							<td>@partida.Jugador2?.Nombres</td>
+							<td>@partida.Ganador?.Nombres</td>
+							<td> @partida.EstadoPartida</td>
+							<td>@partida.TurnoJugador?.Nombres</td>
+							<td> @partida.EstadoTablero </td>
+							<td> @partida.FechaInicio </td>
+							<td> @partida.FechaFin </td>
+							<td class="border">
+								<a href="/Partidas/Edit/@partida.PartidaId" class="btn btn-outline-primary bi bi-pencil-square"> </a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 
 	<div class="card-footer space-between"> 
-		<label> <strong> Total Partidas: </strong> @ListaPartidas.Count</label>
+		<div class="row">
+			<div class="col-12 col-md-3 mb-2">
+				<label> <strong> Total Partidas: </strong> @ListaPartidas.Count</label>
+			</div>
+		</div>
 	</div>
 </div>
 
