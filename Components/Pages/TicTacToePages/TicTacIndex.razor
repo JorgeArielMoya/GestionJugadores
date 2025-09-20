@@ -39,7 +39,7 @@
             </div>
 
             <button class="btn btn-success btn-lg mt-4"
-            disabled= "@(!JugadorXId.HasValue)"
+            disabled= "@(!JugadorXId.HasValue || !JugadorOId.HasValue)"
             @onclick="StartGame">
                 Iniciar Partida
             </button>
@@ -74,7 +74,7 @@
 
     private async void StartGame()
     {
-        if (!JugadorXId.HasValue)
+        if (!JugadorXId.HasValue || !JugadorOId.HasValue)
         {
             return;
         }
