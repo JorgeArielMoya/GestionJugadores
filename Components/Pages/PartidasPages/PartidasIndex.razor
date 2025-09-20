@@ -25,6 +25,7 @@
 					<option value="EstadoPartida"> Estado Partida</option>
 					<option value="GanadorId"> Ganador </option>
 					<option value="TurnoJugadorId"> Turno Jugador </option>
+					<option value="EstadoTablero"> Estado Tablero </option>
 					<option value="FechaInicio"> Fecha Inicio </option>
 					<option value="FechaFin"> Fecha Fin </option>
 				</InputSelect>
@@ -153,6 +154,11 @@
 				else if (Filtro == nameof(Partidas.EstadoPartida))
 				{
 					lista = lista.Where(p => p.EstadoPartida != null && p.EstadoPartida.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
+				}
+
+				else if (Filtro == nameof(Partidas.EstadoTablero))
+				{
+					lista = lista.Where(p => p.EstadoTablero != null && p.EstadoTablero.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
 				}
 			}
 			ListaPartidas = lista;
