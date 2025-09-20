@@ -88,7 +88,10 @@
 
     private async Task HandleCellClick(int index)
     {
-        if (board[index] != null || winner != null || esEmpate) return;
+        if (board[index] != null || winner != null || esEmpate) 
+        {
+            return;
+        }
 
         board[index] = _currentPlayerType;
 
@@ -138,7 +141,10 @@
     {
         var partida = await partidasService.Buscar(PartidaId);
 
-        if (partida == null) return;
+        if (partida == null) 
+        {
+            return;
+        }
 
         partida.EstadoPartida = "Finalizada";
         partida.FechaFin = DateTime.UtcNow;
