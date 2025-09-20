@@ -32,14 +32,6 @@
 							<div class="text-danger"> Este nombre ya se encuentra registrado </div>
 						}
 
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<label for="partidas" class="form-label mt-1"> <strong> Partidas: </strong> </label>
-								<InputNumber id="partidas" class="form-control" @bind-Value="Jugador.Victorias" />
-								<ValidationMessage For="() => Jugador.Victorias"> </ValidationMessage>
-							</div>
-						</div>
-
 						@*Botones*@
 						<div class="card-footer d-flex justify-content-center gap-2 mt-2 bg-light"> 
 							<button type="submit" class="btn btn-primary bi bi-floppy"> Guardar Cambios </button>

@@ -4,6 +4,7 @@ using GestionJugadores.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestionJugadores.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20250917014822_Movimientos")]
+    partial class Movimientos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,13 +135,13 @@ namespace GestionJugadores.Migrations
             modelBuilder.Entity("GestionJugadores.Models.Movimientos", b =>
                 {
                     b.HasOne("GestionJugadores.Models.Jugadores", "Jugador")
-                        .WithMany("Movimientos")
+                        .WithMany("Movimiento")
                         .HasForeignKey("JugadorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GestionJugadores.Models.Partidas", "Partida")
-                        .WithMany("Movimientos")
+                        .WithMany("Movimiento")
                         .HasForeignKey("PartidaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -183,12 +186,12 @@ namespace GestionJugadores.Migrations
 
             modelBuilder.Entity("GestionJugadores.Models.Jugadores", b =>
                 {
-                    b.Navigation("Movimientos");
+                    b.Navigation("Movimiento");
                 });
 
             modelBuilder.Entity("GestionJugadores.Models.Partidas", b =>
                 {
-                    b.Navigation("Movimientos");
+                    b.Navigation("Movimiento");
                 });
 #pragma warning restore 612, 618
         }

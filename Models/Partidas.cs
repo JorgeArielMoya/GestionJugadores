@@ -7,19 +7,19 @@ public class Partidas
 {
     [Key]
     public int PartidaId { get; set; }
-
     public int Jugador1Id { get; set; }
     public int? Jugador2Id { get; set; }
 
     [Required (ErrorMessage = "Campo Requerido")]
     [StringLength(20, ErrorMessage = "Maximo 20 caracteres")]
     public string EstadoPartida { get; set; } = null!;
-
     public int? GanadorId { get; set; }
     public int TurnoJugadorId { get; set; }
 
-    public DateTime FechaInicio { get; set; } = DateTime.UtcNow;
+    [StringLength(9)]
+    public string EstadoTablero { get; set; }
 
+    public DateTime FechaInicio { get; set; } = DateTime.UtcNow;
     public DateTime? FechaFin { get; set; }
 
     // Propiedades de navegación
@@ -34,4 +34,6 @@ public class Partidas
 
     [ForeignKey(nameof(TurnoJugadorId))]
     public virtual Jugadores TurnoJugador { get; set; }
+
+    public virtual ICollection<Movimientos> Movimientos { get; set; } = new List<Movimientos>();
 }
