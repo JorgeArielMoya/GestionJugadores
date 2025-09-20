@@ -45,14 +45,44 @@
     private PlayerType? winner;
     private bool esEmpate;
 
+    private string? jugadorXNombre { get; set; }
+    private string? jugadorONombre { get; set; }
+    private Partidas? PartidaActual;
+
+    protected override async Task OnInitializedAsync ()
+    {
+        PartidaActual = await partidasService.Buscar(PartidaId);
+
+        if (PartidaActual != null)
+        {
+            var jugadorX = await jugadoresService.Buscar(PartidaActual.Jugador1Id);
+            var jugadorO = await jugadoresService.Buscar(PartidaActual.Jugador2Id ?? 0);
+
+            jugadorXNombre = jugadorX?.Nombres ?? "Jugador X";
+            jugadorONombre = jugadorO?.Nombres ?? "Jugador O";
+        }
+
+        StateHasChanged();
+    }
+
     private string GameStatus
     {
         get
         {
-            if (winner != null) return $"🏆 ¡Ganador: {winner}!";
-            return esEmpate
-                ? "🤝 ¡Es un empate!"
-                : $"Turno de: {_currentPlayerType}";
+            if (winner != null)
+            {
+                var ganadorNombre = winner == PlayerType.X ? jugadorXNombre : jugadorONombre;
+                return $"🏆 ¡Ganador: {ganadorNombre}!";
+            }
+
+            if (esEmpate)
+            {
+                return "🤝 ¡Es un empate!";
+            }
+
+            // Mostrar nombre del jugador actual en el turno
+            var jugadorActual = _currentPlayerType == PlayerType.X ? jugadorXNombre : jugadorONombre;
+            return $"Turno de: {jugadorActual} ({_currentPlayerType})";
         }
     }
 
