@@ -11,11 +11,13 @@ public class Jugadores
     [Required(ErrorMessage = "Campo requerido")]
     public String Nombres { get; set; } = null!;
 
-    [Range(0, int.MaxValue, ErrorMessage = "Numero de partidas no valido")]
+    [Range(0, int.MaxValue, ErrorMessage = "Numero de victorias no valido")]
     public int Victorias { get; set; } = 0;
 
+    [Range(0,int.MaxValue, ErrorMessage = "Numero de derrotas no valido")]
     public int Derrotas { get; set; } = 0;
 
+    [Range(0,int.MaxValue,ErrorMessage = "Numero de empates no valido")]
     public int Empates { get; set; } = 0;
 
     [InverseProperty(nameof(Models.Movimientos.Jugador))]
