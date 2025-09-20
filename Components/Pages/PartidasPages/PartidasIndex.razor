@@ -15,34 +15,26 @@
 			</div>
 		</div>
 
-		<div class="row ms-1"> 
-			<div class="col-12 col-md-4">
+		<div class="row align-items-center ms-1">
+			<div class="col-12 col-md-3 mb-3">
 				<label class="col-form-label"> <strong> Filtrar por </strong></label>
-			</div>
-
-			<div class="col-12 col-md-3">
-				<label class="col-form-label"> <strong> Búsqueda </strong></label>
-			</div>
-		</div>
-
-		<div class="row align-items-center"> 
-			<div class="col-12 col-md-3 mb-2">
-				<InputSelect class="form-select" @bind-Value = "Filtro"> 
+				<InputSelect class="form-select" @bind-Value="Filtro">
 					<option value="PartidaId"> PartidaId </option>
-					<option value ="Jugador1Id"> Jugador 1</option>
+					<option value="Jugador1Id"> Jugador 1</option>
 					<option value="Jugador2Id"> Jugador 2 </option>
-					<option value = "EstadoPartida"> Estado Partida</option>
-					<option value= "GanadorId"> Ganador </option>
+					<option value="EstadoPartida"> Estado Partida</option>
+					<option value="GanadorId"> Ganador </option>
 					<option value="TurnoJugadorId"> Turno Jugador </option>
 					<option value="FechaInicio"> Fecha Inicio </option>
 					<option value="FechaFin"> Fecha Fin </option>
 				</InputSelect>
 			</div>
 
-			<div class="col-12 col-md-4">
-				<div class="input-group"> 
-					<input class="form-control" @bind = "ValorFiltro" placeholder="Buscar"> 
-					<button class="btn btn-primary bi bi-search" @onclick = "Buscar"> Buscar </button>
+			<div class="col-12 col-md-4 mb-3">
+				<label class="col-form-label"> <strong> Búsqueda </strong></label>
+				<div class="input-group">
+					<input class="form-control" @bind="ValorFiltro" placeholder="Buscar">
+					<button type ="button" class="btn btn-primary bi bi-search" @onclick="Buscar"> Buscar </button>
 				</div>
 			</div>
 		</div>
@@ -163,11 +155,7 @@
 					lista = lista.Where(p => p.EstadoPartida != null && p.EstadoPartida.Contains(ValorFiltro, StringComparison.OrdinalIgnoreCase)).ToList();
 				}
 			}
-
-			else
-			{
-				ListaPartidas = lista;
-			}
+			ListaPartidas = lista;
 		}
 
 		catch (Exception e)
