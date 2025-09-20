@@ -162,34 +162,6 @@
         await partidasService.Guardar(partida); // Entraria a modificar
     }
 
-    public enum Resultado
-    {
-        Victoria,
-        Derrota,
-        Empate
-    }
-
-    public async Task RegistrarResultado(int jugadorId, Resultado resultado)
-    {
-        var jugador = await jugadoresService.Buscar(jugadorId);
-        if (jugador == null) return;
-
-        switch (resultado)
-        {
-            case Resultado.Victoria:
-                jugador.Victorias++;
-                break;
-            case Resultado.Derrota:
-                jugador.Derrotas++;
-                break;
-            case Resultado.Empate:
-                jugador.Empates++;
-                break;
-        }
-
-        await jugadoresService.Guardar(jugador); // Entraria a modificar 
-    }
-
     private PlayerType? CheckForWinner()
     {
         var winningLines = new[]
