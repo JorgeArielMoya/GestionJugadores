@@ -109,7 +109,7 @@
                 JugadorId = jugadorId, 
                 PosicionFila = index / 3, 
                 PosicionColumna = index % 3, 
-                FechaMovimiento = DateTime.Now
+                FechaMovimiento = DateTime.UtcNow
             };
 
             await movimientosService.Guardar(movimiento);
@@ -147,7 +147,7 @@
         }
 
         partida.EstadoPartida = "Finalizada";
-        partida.FechaFin = DateTime.Now;
+        partida.FechaFin = DateTime.UtcNow;
         partida.EstadoTablero = string.Join("", board.Select(c => c?.ToString() ?? "-"));
 
         if (ganador.HasValue)
