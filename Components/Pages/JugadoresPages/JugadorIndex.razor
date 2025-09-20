@@ -70,17 +70,17 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
 
-	@*Footer*@
-	<div class="card-footer space-between"> 
-		<div class="row">
-			<div class="col-12 col-md-3 mb-2">
-				<label> <strong> Total jugadores: </strong> @ListaJugadores.Count()</label>
-			</div>
-			
-			<div class="col-12 col-md-3 mb-2">
-				<label> <strong> Total partidas: </strong> @ListaJugadores.Sum(j => j.Victorias + j.Derrotas + j.Empates)</label>
+		@*Footer*@
+		<div class="card-footer space-between bg-white">
+			<div class="row">
+				<div class="col-12 col-md-3 mb-2">
+					<label> <strong> Total jugadores: </strong> @ListaJugadores.Count()</label>
+				</div>
+
+				<div class="col-12 col-md-3 mb-2">
+					<label> <strong> Total partidas: </strong> @ListaJugadores.Sum(j => j.Victorias + j.Derrotas + j.Empates)</label>
+				</div>
 			</div>
 		</div>
 	</div>
