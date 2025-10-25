@@ -35,7 +35,7 @@
                                     <tr class="partida-item">
                                         <td>@partida.PartidaId</td>
                                         <td>ID @partida.Jugador1Id</td>
-                                        <td>ID @partida.Jugador2Id</td>
+                                        <td>@(partida.Jugador2Id.HasValue ? $"ID {partida.Jugador2Id}" : "Esperando...")</td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" @onclick="() => OnSelectPartida(partida.PartidaId)">
                                                 Seleccionar
