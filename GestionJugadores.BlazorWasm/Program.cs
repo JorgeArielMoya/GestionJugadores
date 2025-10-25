@@ -10,6 +10,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://gestionhuacalesapi.azurewebsites.net/") });
 
 builder.Services.AddScoped<IPartidasApiService, PartidasApiService>();
-builder.Services.AddScoped<IMovimientoApiService, MovimientosApiService>();
+builder.Services.AddScoped<IMovimientosApiService, MovimientosApiService>();
 
 await builder.Build().RunAsync();

@@ -4,13 +4,13 @@ using System.Net.Http.Json;
 
 namespace GestionJugadores.BlazorWasm.Services;
 
-public interface IMovimientoApiService
+public interface IMovimientosApiService
 {
     Task<Resource<List<MovimientoResponse>>> GetMovimientosByPartidaAsync(int partidaId);
     Task<Resource<MovimientoResponse>> PostMovimientoAsync(MovimientoRequest movimientoRequest);
 }
 
-public class MovimientosApiService(HttpClient httpClient) : IMovimientoApiService
+public class MovimientosApiService(HttpClient httpClient) : IMovimientosApiService
 {
     public async Task<Resource<List<MovimientoResponse>>> GetMovimientosByPartidaAsync(int partidaId)
     {
