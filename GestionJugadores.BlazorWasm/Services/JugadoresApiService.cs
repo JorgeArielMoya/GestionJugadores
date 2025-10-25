@@ -9,7 +9,7 @@ public interface IJugadorApiService
     Task<Resource<List<JugadorResponse>>> GetJugadoresAsync();
 }
 
-public class JugadorApiService(HttpClient httpClient) : IJugadorApiService
+public class JugadoresApiService(HttpClient httpClient) : IJugadorApiService
 {
     public async Task<Resource<List<JugadorResponse>>> GetJugadoresAsync()
     {
