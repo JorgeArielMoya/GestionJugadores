@@ -10,7 +10,7 @@ public interface IMovimientoApiService
     Task<Resource<MovimientoResponse>> PostMovimientoAsync(MovimientoRequest movimientoRequest);
 }
 
-public class MovimientoApiService(HttpClient httpClient) : IMovimientoApiService
+public class MovimientosApiService(HttpClient httpClient) : IMovimientoApiService
 {
     public async Task<Resource<List<MovimientoResponse>>> GetMovimientosByPartidaAsync(int partidaId)
     {
