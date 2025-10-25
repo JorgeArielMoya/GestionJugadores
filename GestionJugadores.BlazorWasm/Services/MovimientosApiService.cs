@@ -1,7 +1,6 @@
 ﻿using GestionJugadores.Shared;
 using GestionJugadores.Shared.Dtos;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace GestionJugadores.BlazorWasm.Services;
 
