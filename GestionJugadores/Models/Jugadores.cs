@@ -9,7 +9,7 @@ public class Jugadores
     public int JugadorId {  get; set; }
 
     [Required(ErrorMessage = "Campo requerido")]
-    public String Nombres { get; set; } = null!;
+    public string Nombres { get; set; } = null!;
 
     [Range(0, int.MaxValue, ErrorMessage = "Numero de victorias no valido")]
     public int Victorias { get; set; } = 0;
