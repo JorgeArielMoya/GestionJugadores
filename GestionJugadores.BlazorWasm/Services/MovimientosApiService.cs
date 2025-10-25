@@ -1,13 +1,14 @@
 ﻿using GestionJugadores.Shared;
 using GestionJugadores.Shared.Dtos;
 using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace GestionJugadores.BlazorWasm.Services;
 
 public interface IMovimientosApiService
 {
     Task<Resource<List<MovimientoResponse>>> GetMovimientosByPartidaAsync(int partidaId);
-    Task<Resource<MovimientoResponse>> PostMovimientoAsync(MovimientoRequest movimientoRequest);
+    Task<Resource<MovimientoResponse>> PostMovimiento(int partidaId, string jugador, int posicionFila, int posicionColumna);
 }
 
 public class MovimientosApiService(HttpClient httpClient) : IMovimientosApiService
@@ -25,14 +26,14 @@ public class MovimientosApiService(HttpClient httpClient) : IMovimientosApiServi
         }
     }
 
-    public async Task<Resource<MovimientoResponse>> PostMovimientoAsync(MovimientoRequest movimientoRequest)
+    public async Task<Resource<MovimientoResponse>> PostMovimiento(int partidaId, string jugador, int posicionFila, int posicionColumna)
     {
+        var request = new MovimientoRequest(partidaId, jugador, posicionFila, posicionColumna);
         try
         {
-            var response = await httpClient.PostAsJsonAsync("api/Movimientos", movimientoRequest);
+            var response = await httpClient.PostAsJsonAsync("api/Movimientos", request);
             response.EnsureSuccessStatusCode();
-            var created = await response.Content.ReadFromJsonAsync<MovimientoResponse>();
-            return new Resource<MovimientoResponse>.Success(created!);
+            return new Resource<MovimientoResponse>.Success(null!);
         }
         catch (HttpRequestException ex)
         {
