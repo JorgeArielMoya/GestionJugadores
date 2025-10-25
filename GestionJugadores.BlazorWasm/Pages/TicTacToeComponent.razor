@@ -1,5 +1,6 @@
 ﻿@page "/gameBoard"
 @inject IPartidasApiService partidasApiService
+@inject IMovimientosApiService movimientosApiService
 
 <PageTitle>TicTacToe</PageTitle>
 
@@ -173,7 +174,7 @@ OnPartidaSelected="HandlePartidaSelected" />
 
     }
 
-    private void HandleCellClick(int index)
+    private async Task HandleCellClick(int index)
     {
         // Ignorar si la celda está ocupada o el juego terminó
         if (board[index] != null || winner != null || esEmpate)
@@ -182,6 +183,21 @@ OnPartidaSelected="HandlePartidaSelected" />
         }
 
         board[index] = _currentPlayerType;
+
+        int fila = index / 3;
+        int columna = index % 3;
+
+        var jugador = _currentPlayerType == PlayerType.X ? "X" : "O";
+        var response = await movimientosApiService.PostMovimiento(PartidaId, jugador, fila, columna);
+
+        if (response is Resource<MovimientoResponse>.Error error)
+        {
+            errorMessage = $"Error al registrar movimiento: {error.Message}";
+            return;
+        }
+
+        // Limpiar mensaje de error previo
+        errorMessage = null;
 
         winner = CheckForWinner();
         if (winner != null)
