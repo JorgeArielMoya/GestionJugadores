@@ -8,7 +8,8 @@ public interface IPartidasApiService
 {
     Task<Resource<List<PartidaResponse>>> GetPartidasAsync();
     Task<Resource<PartidaResponse>> GetPartidaAsync(int partidaId);
-    Task<Resource<PartidaResponse>> PostPartida(int jugador1, int jugador2);
+    Task<Resource<PartidaResponse>> PostPartida(int jugador1, int? jugador2);
+    Task<Resource<PartidaResponse>> PutPartida(int partidaId, int jugador1, int? jugador2);
 }
 
 public class PartidasApiService(HttpClient httpClient) : IPartidasApiService
@@ -37,7 +38,7 @@ public class PartidasApiService(HttpClient httpClient) : IPartidasApiService
             return new Resource<PartidaResponse>.Error(ex.Message);
         }
     }
-    public async Task<Resource<PartidaResponse>> PostPartida(int jugador1, int jugador2)
+    public async Task<Resource<PartidaResponse>> PostPartida(int jugador1, int? jugador2)
     {
         var request = new PartidaRequest(jugador1, jugador2);
         try
@@ -46,6 +47,26 @@ public class PartidasApiService(HttpClient httpClient) : IPartidasApiService
             response.EnsureSuccessStatusCode();
             var created = await response.Content.ReadFromJsonAsync<PartidaResponse>();
             return new Resource<PartidaResponse>.Success(created!);
+        }
+        catch (HttpRequestException ex)
+        {
+            return new Resource<PartidaResponse>.Error($"Error de red: {ex.Message}");
+        }
+        catch (NotSupportedException)
+        {
+            return new Resource<PartidaResponse>.Error("Respuesta inválida del servidor.");
+        }
+    }
+
+    public async Task<Resource<PartidaResponse>> PutPartida(int partidaId, int jugador1, int? jugador2)
+    {
+        var request = new PartidaRequest(jugador1, jugador2);
+
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"api/Partidas/{partidaId}", request);
+            response.EnsureSuccessStatusCode();
+            return new Resource<PartidaResponse>.Success(null!);
         }
         catch (HttpRequestException ex)
         {
