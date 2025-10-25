@@ -5,6 +5,10 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionJugadores", "GestionJugadores\GestionJugadores.csproj", "{F1CB9486-8731-40B1-8C0B-7632567CA7EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionJugadores.BlazorWasm", "GestionJugadores.BlazorWasm\GestionJugadores.BlazorWasm.csproj", "{9CD57163-395F-47E3-8D3E-EFA249370846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionJugadores.Shared", "GestionJugadores.Shared\GestionJugadores.Shared.csproj", "{2AD29260-B4EA-442A-A172-D47B8B5DDA1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{F1CB9486-8731-40B1-8C0B-7632567CA7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1CB9486-8731-40B1-8C0B-7632567CA7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1CB9486-8731-40B1-8C0B-7632567CA7EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CD57163-395F-47E3-8D3E-EFA249370846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD57163-395F-47E3-8D3E-EFA249370846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD57163-395F-47E3-8D3E-EFA249370846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD57163-395F-47E3-8D3E-EFA249370846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD29260-B4EA-442A-A172-D47B8B5DDA1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD29260-B4EA-442A-A172-D47B8B5DDA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD29260-B4EA-442A-A172-D47B8B5DDA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD29260-B4EA-442A-A172-D47B8B5DDA1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
