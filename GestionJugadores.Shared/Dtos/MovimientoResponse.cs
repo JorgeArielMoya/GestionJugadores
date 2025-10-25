@@ -2,7 +2,7 @@
 
 public record MovimientoResponse(
     int MovimientoId,
-    int JugadorId,
+    string Jugador,
     int PosicionFila,
     int PosicionColumna
 );
