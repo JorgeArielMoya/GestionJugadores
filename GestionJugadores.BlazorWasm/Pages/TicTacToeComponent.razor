@@ -29,8 +29,8 @@
                     </div>
                 </div>
                 <button class="btn btn-success btn-lg mt-2"
-                        disabled="@(Jugador1Id == 0 || Jugador2Id == 0)"
-                        @onclick="CreateGame">
+                disabled="@(Jugador1Id == 0 || Jugador2Id == 0)"
+                @onclick="CreateGame">
                     Crear Partida
                 </button>
                 <hr class="my-4" />
@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <button class="btn btn-warning btn-lg mt-2"
-                        disabled="@(PartidaId == 0)"
-                        @onclick="JoinGame">
+                disabled="@(PartidaId == 0)"
+                @onclick="JoinGame">
                     Unirse a Partida
                 </button>
 
@@ -69,8 +69,8 @@
                     {
                         var cellIndex = i; // Copia local para evitar problemas con el closure en el lambda
                         <button class="cell @GetPlayerClass(board[cellIndex])"
-                                @onclick="() => HandleCellClick(cellIndex)"
-                                disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
+                        @onclick="() => HandleCellClick(cellIndex)"
+                        disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
                             @board[cellIndex]?.ToString()
                         </button>
                     }
@@ -98,11 +98,10 @@
 </div>
 
 <PartidasModal IsOpen="showModal"
-               IsOpenChanged="(value) => showModal = value"
-               OnPartidaSelected="HandlePartidaSelected" />
+IsOpenChanged="(value) => showModal = value"
+OnPartidaSelected="HandlePartidaSelected" />
 
 @code {
-
     public Guid CurrentSession { get; set; }
     public int Jugador1Id { get; set; }
     public int Jugador2Id { get; set; }
