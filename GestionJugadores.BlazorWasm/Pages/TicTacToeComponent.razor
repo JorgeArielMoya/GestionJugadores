@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <button class="btn btn-warning btn-lg mt-2"
-                disabled="@(PartidaId == 0 || MiJugadorId == 0)"
+                disabled="@(PartidaId == 0 || MiJugadorId == 0 || IsDisabledJoin())"
                 @onclick="JoinGame">
                     Unirse a Partida
                 </button>
@@ -69,8 +69,32 @@
             <!-- PANTALLA DE JUEGO -->
             <div class="game-screen">
                 <h2>Partida: @PartidaId</h2>
-                <h4 class="game-status">@GameStatus</h4>
 
+                @if (winner != null)
+                {
+                    <div class="alert alert-success mt-3">
+                        @GameStatus
+                    </div>
+                }
+                else if (esEmpate)
+                {
+                    <div class="alert alert-warning mt-3">
+                        @GameStatus
+                    </div>
+                }
+                else if (CanPlay())
+                {
+                    <div class="alert alert-primary mt-3">
+                        @GameStatus
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info mt-3">
+                        @GameStatus
+                    </div>
+                }
+                
                 <div class="game-board">
                     @for (var i = 0; i < 9; i++)
                     {
@@ -99,13 +123,6 @@
                     <button class="btn btn-secondary" @onclick="LeaveGame">
                         Salir de la Partida
                     </button>
-
-                    @if (autoRefreshEnabled)
-                    {
-                        <div class="mt-2">
-                            <small class="text-muted">🔄 Se ha activado la sincronizacion automatica (cada 2 segundos)</small>
-                        </div>
-                    }
                 </div>
             </div>
         }
@@ -156,9 +173,13 @@ OnPartidaSelected="HandlePartidaSelected" />
             var turno = _currentPlayerType.ToString();
             var esMiTurno = CanPlay();
 
-            return esMiTurno
-                ? $"✅ Tu turno ({turno})"
-                : $"⏳ Esperando al oponente ({turno})";
+            if (esMiTurno)
+            {
+                return $"🎮 ¡Tu turno! (Juegas con {MiSimbolo})";
+            }
+
+            // Si NO es mi turno
+            return $"⏳ Esperando turno del jugador {_currentPlayerType}...";
         }
     }
 
@@ -348,6 +369,17 @@ OnPartidaSelected="HandlePartidaSelected" />
 
         return false;
     }
+
+    private bool IsDisabledJoin()
+    {
+        // Si ya cargaste los datos de la partida, verifica si ya está en ella
+        if (Jugador1Id != 0 && Jugador2Id != null && Jugador2Id != 0)
+        {
+            return MiJugadorId == Jugador1Id || MiJugadorId == Jugador2Id;
+        }
+        return false;
+    }
+
     private void LeaveGame()
     {
         StopPolling();
