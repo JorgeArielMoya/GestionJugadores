@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <button class="btn btn-warning btn-lg mt-2"
-                disabled="@(PartidaId == 0 || MiJugadorId == 0 || UnirseDeshabilitado())"
+                disabled="@(PartidaId == 0 || MiJugadorId == 0)"
                 @onclick="JoinGame">
                     Unirse a Partida
                 </button>
@@ -110,7 +110,7 @@
                         @if (refreshing)
                         {
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            <span> Cargando...</span>
+                            <span> Refrescando...</span>
                         }
                         else
                         {
@@ -364,15 +364,6 @@ OnPartidaSelected="HandlePartidaSelected" />
             return true;
         }
 
-        return false;
-    }
-
-    private bool UnirseDeshabilitado()
-    {
-        if (Jugador1Id != 0 && Jugador2Id != null && Jugador2Id != 0)
-        {
-            return MiJugadorId == Jugador1Id || MiJugadorId == Jugador2Id;
-        }
         return false;
     }
 
