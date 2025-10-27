@@ -50,11 +50,11 @@ public class PartidasApiService(HttpClient httpClient) : IPartidasApiService
         }
         catch (HttpRequestException ex)
         {
-            return new Resource<PartidaResponse>.Error($"Error de red: {ex.Message}");
+            return new Resource<PartidaResponse>.Error($"Error en la red: {ex.Message}");
         }
         catch (NotSupportedException)
         {
-            return new Resource<PartidaResponse>.Error("Respuesta inválida del servidor.");
+            return new Resource<PartidaResponse>.Error("Respuesta no valida del servidor");
         }
     }
 
@@ -70,11 +70,11 @@ public class PartidasApiService(HttpClient httpClient) : IPartidasApiService
         }
         catch (HttpRequestException ex)
         {
-            return new Resource<PartidaResponse>.Error($"Error de red: {ex.Message}");
+            return new Resource<PartidaResponse>.Error($"Error en la red: {ex.Message}");
         }
         catch (NotSupportedException)
         {
-            return new Resource<PartidaResponse>.Error("Respuesta inválida del servidor.");
+            return new Resource<PartidaResponse>.Error("Respuesta no valida del servidor");
         }
     }
 }
