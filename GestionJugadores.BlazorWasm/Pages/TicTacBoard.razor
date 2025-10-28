@@ -137,6 +137,8 @@ OnPartidaSelected="HandlePartidaSelected" />
     public PlayerType? winner { get; set; }
     public bool esEmpate { get; set; }
     public PlayerType?[] board { get; set; } = new PlayerType?[9];
+    public string? Jugador1Nombre { get; set; }
+    public string? Jugador2Nombre { get; set; }
 
     public enum PlayerType { X, O }
     public int Jugador1Id { get; set; }
