@@ -16,7 +16,7 @@
                     En caso de que el jugador haga trampa el ganador será el otro. Se debe conseguir realizar una línea recta o diagonal por símbolo.
                 </p>
             </div>
-
+            <!-- PANTALLA DE SELECCIÓN DE JUGADOR -->
             <div class="selection-screen">
                 <h4>Crear una partida Nueva</h4>
                 <div class="player-buttons">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <button class="btn btn-warning btn-lg mt-2"
-                disabled="@(PartidaId == 0 || MiJugadorId == 0 || UnirseDeshabilitado())"
+                disabled="@(PartidaId == 0 || MiJugadorId == 0 || IsDisabledJoin())"
                 @onclick="JoinGame">
                     Unirse a Partida
                 </button>
@@ -65,31 +65,32 @@
         }
         else
         {
+            <!-- PANTALLA DE JUEGO -->
             <div class="game-screen">
                 <h2>Partida: @PartidaId</h2>
 
                 @if (winner != null)
                 {
                     <div class="alert alert-success mt-3">
-                        @EstadoJuego
+                        @GameStatus
                     </div>
                 }
                 else if (esEmpate)
                 {
                     <div class="alert alert-warning mt-3">
-                        @EstadoJuego
+                        @GameStatus
                     </div>
                 }
-                else if (PuedeJugar())
+                else if (CanPlay())
                 {
                     <div class="alert alert-primary mt-3">
-                        @EstadoJuego
+                        @GameStatus
                     </div>
                 }
                 else
                 {
                     <div class="alert alert-info mt-3">
-                        @EstadoJuego
+                        @GameStatus
                     </div>
                 }
                 
@@ -152,10 +153,10 @@ OnPartidaSelected="HandlePartidaSelected" />
 
     private string MiSimbolo => MiJugadorId == Jugador1Id ? "X" : "O";
 
-    private Timer? temporizador;
-    private bool refrescadoHabilitado = false;
+    private Timer? pollingTimer;
+    private bool autoRefreshEnabled = false;
 
-    private string EstadoJuego
+    private string GameStatus
     {
         get
         {
@@ -169,7 +170,7 @@ OnPartidaSelected="HandlePartidaSelected" />
             }
 
             var turno = _currentPlayerType.ToString();
-            var esMiTurno = PuedeJugar();
+            var esMiTurno = CanPlay();
 
             if (esMiTurno)
             {
@@ -241,7 +242,7 @@ OnPartidaSelected="HandlePartidaSelected" />
 
     private async Task HandleCellClick(int index)
     {
-        if (!PuedeJugar())
+        if (!CanPlay())
         {
             errorMessage = "¡No es tu turno!";
             return;
@@ -353,7 +354,7 @@ OnPartidaSelected="HandlePartidaSelected" />
         return player == PlayerType.X ? "player-x" : "player-o";
     }
 
-    private bool PuedeJugar()
+    private bool CanPlay()
     {
         if (_currentPlayerType == PlayerType.X && MiJugadorId == Jugador1Id)
         {
@@ -368,8 +369,9 @@ OnPartidaSelected="HandlePartidaSelected" />
         return false;
     }
 
-    private bool UnirseDeshabilitado()
+    private bool IsDisabledJoin()
     {
+        // Si ya cargaste los datos de la partida, verifica si ya está en ella
         if (Jugador1Id != 0 && Jugador2Id != null && Jugador2Id != 0)
         {
             return MiJugadorId == Jugador1Id || MiJugadorId == Jugador2Id;
@@ -404,8 +406,8 @@ OnPartidaSelected="HandlePartidaSelected" />
 
     private void StartPolling()
     {
-        refrescadoHabilitado = true;
-        temporizador = new Timer(async _ =>
+        autoRefreshEnabled = true;
+        pollingTimer = new Timer(async _ =>
         {
             if (gameStarted && winner == null && !esEmpate)
             {
@@ -420,9 +422,9 @@ OnPartidaSelected="HandlePartidaSelected" />
 
     private void StopPolling()
     {
-        refrescadoHabilitado = false;
-        temporizador?.Dispose();
-        temporizador = null;
+        autoRefreshEnabled = false;
+        pollingTimer?.Dispose();
+        pollingTimer = null;
     }
 
     public void Dispose()
