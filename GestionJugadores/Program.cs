@@ -5,12 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Inyeccion del Api
-builder.Services.AddHttpClient("ApiGestionHuacales", client =>
-{
-    client.BaseAddress = new Uri("https://gestionhuacalesapi.azurewebsites.net/");
-});
-
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
@@ -26,8 +20,15 @@ builder.Services.AddScoped<PartidasService>();
 builder.Services.AddScoped<MovimientosService>();
 
 //Inyeccion de los ApiService
-builder.Services.AddScoped<IPartidasApiService, PartidasApiService>();
-builder.Services.AddScoped<IMovimientosApiService, MovimientosApiService>();
+builder.Services.AddHttpClient<IPartidasApiService, PartidasApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://gestionhuacalesapi.azurewebsites.net/");
+});
+
+builder.Services.AddHttpClient<IMovimientosApiService, MovimientosApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://gestionhuacalesapi.azurewebsites.net/");
+});
 
 var app = builder.Build();
 
