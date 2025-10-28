@@ -5,7 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//
+//Inyeccion del Api
+builder.Services.AddHttpClient("ApiGestionHuacales", client =>
+{
+    client.BaseAddress = new Uri("https://gestionhuacalesapi.azurewebsites.net/");
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
