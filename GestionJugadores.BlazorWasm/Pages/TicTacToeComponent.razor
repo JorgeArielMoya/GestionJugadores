@@ -207,7 +207,7 @@ OnPartidaSelected="HandlePartidaSelected" />
     {
         if (PartidaId <= 0 || MiJugadorId == 0)
         {
-            errorMessage = "Por favor, ingrse el ID de la partida y el ID de su jugador";
+            errorMessage = "Error: Debe ingresar el ID de la partida y tu ID de jugador.";
             return;
         }
 
@@ -243,7 +243,7 @@ OnPartidaSelected="HandlePartidaSelected" />
     {
         if (!PuedeJugar())
         {
-            errorMessage = "¡Respete el turno de su rival!";
+            errorMessage = "¡No es tu turno!";
             return;
         }
 
@@ -303,6 +303,7 @@ OnPartidaSelected="HandlePartidaSelected" />
                                 : PlayerType.O;
             }
 
+            // Determinar de quien es el turno, si es par es turno de X, si es impar es turno de O
             _currentPlayerType = movimientos.Count % 2 == 0 ? PlayerType.X : PlayerType.O;
 
             winner = CheckForWinner();
