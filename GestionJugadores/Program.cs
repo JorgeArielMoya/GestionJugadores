@@ -25,6 +25,10 @@ builder.Services.AddScoped<JugadoresService>();
 builder.Services.AddScoped<PartidasService>();
 builder.Services.AddScoped<MovimientosService>();
 
+//Inyeccion de los ApiService
+builder.Services.AddScoped<IPartidasApiService, PartidasApiService>();
+builder.Services.AddScoped<IMovimientosApiService, MovimientosApiService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
