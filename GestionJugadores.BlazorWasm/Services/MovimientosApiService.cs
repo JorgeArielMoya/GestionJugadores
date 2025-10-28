@@ -36,11 +36,11 @@ public class MovimientosApiService(HttpClient httpClient) : IMovimientosApiServi
         }
         catch (HttpRequestException ex)
         {
-            return new Resource<MovimientoResponse>.Error($"Error en la red: {ex.Message}");
+            return new Resource<MovimientoResponse>.Error($"Error de red: {ex.Message}");
         }
         catch (NotSupportedException)
         {
-            return new Resource<MovimientoResponse>.Error("Respuesta no valida del servidor");
+            return new Resource<MovimientoResponse>.Error("Respuesta inválida del servidor.");
         }
     }
 }
