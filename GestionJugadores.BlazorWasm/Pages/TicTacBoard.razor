@@ -21,11 +21,11 @@
                 <h4>Crear una partida Nueva</h4>
                 <div class="player-buttons">
                     <div class="mb-3">
-                        <label class="form-label"> <strong> Jugador 1 </strong></label>
+                        <label class="form-label">Jugador 1</label>
                         <input type="number" class="form-control" @bind="Jugador1Id" placeholder="ID Jugador 1" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"> <strong> Jugador 2 </strong> </label>
+                        <label class="form-label">Jugador 2</label>
                         <input type="number" class="form-control" @bind="Jugador2Id" placeholder="ID Jugador 2" />
                     </div>
                 </div>
@@ -38,12 +38,12 @@
 
                 <h4>Unirse a Partida Existente</h4>
                 <div class="form-group mb-3">
-                    <label for="miJugadorId"><strong> Tu ID de Jugador: </strong></label>
+                    <label for="miJugadorId">Tu ID de Jugador:</label>
                     <input id="miJugadorId" type="number" class="form-control" @bind="MiJugadorId" placeholder="Tu ID de jugador" />
                 </div>
 
                 <div class="form-group">
-                    <label for="partidaId"> <strong> ID de la Partida: </strong></label>
+                    <label for="partidaId">ID de la Partida:</label>
                     <div class="input-group">
                         <input id="partidaId" type="number" class="form-control" @bind="PartidaId" placeholder="ID de la partida" />
                         <button class="btn btn-outline-secondary" type="button" @onclick="OpenPartidasModal">
