@@ -7,21 +7,17 @@
     <div class="game-container">
         @if (!gameStarted)
         {
+            <h2> <strong> Tic Tac Toe </strong> </h2>
             <div class="container-fluid py-5">
                 <h4> <strong> Unirse a Partida Existente </strong> </h4>
                 <div class="form-group">
                     <label for="partidaId"> <strong> ID de la Partida </strong></label>
                     <div class="input-group">
                         <input id="partidaId" type="number" class="form-control" @bind="PartidaId" placeholder="ID de la partida" />
-                        <button class="btn btn-outline-secondary bi bi-search" type="button" @onclick="OpenPartidasModal"> </button>
+                        <button class="btn btn-outline-secondary bi bi-search" type="button" @onclick = "JoinGame"> </button>
                     </div>
                 </div>
-                <button class="btn btn-warning btn-lg mt-2"
-                disabled="@(PartidaId == 0)"
-                @onclick="JoinGame">
-                    Unirse a Partida
-                </button>
-
+                
                 @if (!string.IsNullOrWhiteSpace(errorMessage))
                 {
                     <div class="alert alert-danger mt-3">@errorMessage</div>
@@ -89,10 +85,6 @@
         }
     </div>
 </div>
-
-<PartidasModal IsOpen="showModal"
-IsOpenChanged="(value) => showModal = value"
-OnPartidaSelected="HandlePartidaSelected" />
 
 @code {
     private Guid CurrentSession { get; set; }
@@ -359,16 +351,6 @@ OnPartidaSelected="HandlePartidaSelected" />
         errorMessage = null;
         winner = null;
         esEmpate = false;
-    }
-
-    private void OpenPartidasModal()
-    {
-        showModal = true;
-    }
-
-    private void HandlePartidaSelected(int partidaId)
-    {
-        PartidaId = partidaId;
     }
 
     private void StartPolling()
