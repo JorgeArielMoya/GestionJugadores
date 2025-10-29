@@ -9,10 +9,10 @@
         {
             <div class="container-fluid py-5">
                 <h4> <strong> Unirse a Partida Existente </strong> </h4>
-                <div class="form-group mb-3">
+                @* <div class="form-group mb-3">
                     <label for="miJugadorId"><strong> Tu ID de Jugador </strong></label>
                     <input id="miJugadorId" type="number" class="form-control" @bind="MiJugadorId" placeholder="Tu ID de jugador" />
-                </div>
+                </div> *@
 
                 <div class="form-group">
                     <label for="partidaId"> <strong> ID de la Partida </strong></label>
@@ -22,8 +22,8 @@
                     </div>
                 </div>
                 <button class="btn btn-warning btn-lg mt-2"
-                        disabled="@(PartidaId == 0 || MiJugadorId == 0)"
-                        @onclick="JoinGame">
+                disabled="@(PartidaId == 0)"
+                @onclick="JoinGame">
                     Unirse a Partida
                 </button>
 
@@ -68,8 +68,8 @@
                     {
                         var cellIndex = i; // Copia local para evitar problemas con el closure en el lambda
                         <button class="cell @GetPlayerClass(board[cellIndex])"
-                                @onclick="() => HandleCellClick(cellIndex)"
-                                disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
+                        @onclick="() => HandleCellClick(cellIndex)"
+                        disabled="@(board[cellIndex] != null || winner != null || esEmpate)">
                             @board[cellIndex]?.ToString()
                         </button>
                     }
@@ -96,8 +96,8 @@
 </div>
 
 <PartidasModal IsOpen="showModal"
-               IsOpenChanged="(value) => showModal = value"
-               OnPartidaSelected="HandlePartidaSelected" />
+IsOpenChanged="(value) => showModal = value"
+OnPartidaSelected="HandlePartidaSelected" />
 
 @code {
     private Guid CurrentSession { get; set; }
@@ -122,6 +122,8 @@
 
     private Timer? temporizador;
     private bool refrescadoHabilitado = false;
+
+    private static Dictionary<int, Dictionary<Guid, int>> partidaSesiones = new Dictionary<int, Dictionary<Guid, int>>();
 
     private string EstadoJuego
     {
@@ -157,13 +159,14 @@
 
     private async Task JoinGame()
     {
-        if (PartidaId <= 0 || MiJugadorId == 0)
+        if (PartidaId <= 0)
         {
-            errorMessage = "Por favor, ingrse el ID de la partida y el ID de su jugador";
+            errorMessage = "Por favor, ingrese el ID de la partida";
             return;
         }
 
         var response = await partidasApiService.GetPartidaAsync(PartidaId);
+
         if (response is Resource<PartidaResponse>.Error error)
         {
             errorMessage = $"Error al unirse a la partida: {error.Message}";
@@ -174,16 +177,45 @@
         Jugador1Id = partida.Jugador1Id;
         Jugador2Id = partida.Jugador2Id;
 
-        // Si el jugador 2 no esta, hacer put para añadir al jugador 2
+        // Verificar que la partida tenga ambos jugadores asignados
         if (Jugador2Id == null || Jugador2Id == 0)
         {
-            var update = await partidasApiService.PutPartida(PartidaId, Jugador1Id, MiJugadorId);
-            if (update is Resource<PartidaResponse>.Error updError)
+            errorMessage = "Esta partida aún no tiene 2 jugadores asignados en el servidor.";
+            return;
+        }
+
+        // Asignar jugador según sesiones existentes en esta partida
+        if (!partidaSesiones.ContainsKey(PartidaId))
+        {
+            partidaSesiones[PartidaId] = new Dictionary<Guid, int>();
+        }
+
+        // Si esta sesión ya jugó en esta partida, recuperar su jugador
+        if (partidaSesiones[PartidaId].ContainsKey(CurrentSession))
+        {
+            MiJugadorId = partidaSesiones[PartidaId][CurrentSession];
+        }
+        else
+        {
+            // Asignar jugador disponible (el que no ha sido tomado por otra sesión)
+            var jugadoresOcupados = partidaSesiones[PartidaId].Values.ToList();
+
+            if (!jugadoresOcupados.Contains(Jugador1Id))
             {
-                errorMessage = $"Error al ingresar el jugador 2: {updError.Message}";
+                MiJugadorId = Jugador1Id;
+            }
+            else if (!jugadoresOcupados.Contains(Jugador2Id.Value))
+            {
+                MiJugadorId = Jugador2Id.Value;
+            }
+            else
+            {
+                errorMessage = "Esta partida ya tiene 2 jugadores activos. No puedes unirte.";
                 return;
             }
-            Jugador2Id = MiJugadorId;
+
+            // Registrar esta sesión con su jugador
+            partidaSesiones[PartidaId][CurrentSession] = MiJugadorId;
         }
 
         gameStarted = true;
@@ -371,8 +403,4 @@
     {
         StopPolling();
     }
-}
-
-@code {
-
 }
