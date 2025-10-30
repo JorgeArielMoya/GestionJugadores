@@ -67,20 +67,7 @@
                         </button>
                     }
                 </div>
-
                 <div class="mt-4">
-                    <button class="btn btn-info me-2" @onclick="RefreshGameState" disabled="@refreshing">
-                        @if (refreshing)
-                        {
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            <span> Refrescando...</span>
-                        }
-                        else
-                        {
-                            <span>🔄 Refrescar Estado</span>
-                        }
-                    </button>
-
                     <button class="btn btn-secondary bi bi-arrow-left-circle" @onclick="LeaveGame"> Abandonar partida </button>
                 </div>
             </div>
